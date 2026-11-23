@@ -1,0 +1,717 @@
+@charset "UTF-8";
+/* =====================================================================
+   BRAND IDENTITIES page — Nehal El Hendy portfolio
+   Deep indigo atmosphere + neon botanical art + glass project folders.
+   Fonts and brand tokens are the main site's (MuseoModerno / Feeling Passionate /
+   VAG Rounded Next; Arabic: Mohawla / Lemon Brush / Montserrat Arabic).
+   ===================================================================== */
+@font-face{font-family:'MuseoModerno';src:url(../hb/f/museomoderno-800.woff) format('woff');font-weight:800;font-display:swap}
+@font-face{font-family:'MuseoModerno';src:url(../hb/f/museomoderno-900.woff) format('woff');font-weight:900;font-display:swap}
+@font-face{font-family:'Feeling Passionate';src:url(../hb/f/feeling-passionate.woff) format('woff');font-display:swap}
+@font-face{font-family:'VAG Rounded Next';src:url(../hb/f/vag-rounded-next-600.woff) format('woff');font-weight:600;font-display:swap}
+@font-face{font-family:'VAG Rounded Next';src:url(../hb/f/vag-rounded-next-900.woff) format('woff');font-weight:900;font-display:swap}
+@font-face{font-family:'Mohawla';src:url(../hb/f/mohawla.woff) format('woff');font-display:swap}
+@font-face{font-family:'Lemon Brush Arabic';src:url(../hb/f/lemon-brush-arabic.woff) format('woff');font-display:swap}
+@font-face{font-family:'Montserrat Arabic';src:url(../hb/f/montserrat-arabic-400.woff) format('woff');font-display:swap}
+
+:root{
+  /* site brand palette (unchanged) */
+  --brand-orange:#FFA835;--brand-coral:#FF5646;--brand-pink:#FF2A6F;--brand-magenta:#CA12C2;--brand-mauve:#5C246E;--brand-mint:#27F6C5;
+  --brand-cream:#FFF6EC;--brand-ink:#211627;
+  /* this page: deep indigo + neon botanical light */
+  --indigo-0:#2A0440;--indigo-1:#4A0759;--indigo-2:#7D0D8A;--violet:#9A12A6;
+  --neon-cyan:#3FE6FF;--neon-blue:#3D6BFF;--neon-violet:#9B5CFF;--neon-pink:#FF4FD8;
+  --rounded:"VAG Rounded Next","Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;
+  --gap:clamp(44px,5vw,76px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:#1A0222;overflow-x:hidden}
+body{margin:0;min-height:100vh;position:relative;color:#fff;font:600 16px/1.6 var(--rounded);overflow-x:hidden;
+  /* darker: deep fuchsia → near-black plum. Keep in sync with BG_STOPS in bi.js (the wave in front of the flower uses it) */
+  background:linear-gradient(180deg,#46074F 0,#330540 900px,#1A0222 100%)}
+@supports (overflow:clip){body{overflow-x:clip}}
+img{display:block;max-width:100%}
+a{color:inherit}button{font:inherit;color:inherit;cursor:pointer}
+::selection{background:#FFE13D;color:#4A0759}
+html[dir="rtl"] body{font-family:"Montserrat Arabic",system-ui,sans-serif;font-weight:400}
+
+/* ---------- atmosphere: liquid blobs (like the main site) ---------- */
+.bi-liquid{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+@keyframes liqMorph{0%{border-radius:58% 42% 55% 45%/45% 55% 45% 55%}33%{border-radius:40% 60% 42% 58%/60% 40% 62% 38%}66%{border-radius:62% 38% 48% 52%/38% 62% 40% 60%}100%{border-radius:48% 52% 62% 38%/55% 45% 58% 42%}}
+@keyframes biSway{0%,100%{transform:rotate(-1.6deg) scale(1)}50%{transform:rotate(1.6deg) scale(1.02)}}
+@keyframes biGlow{0%,100%{opacity:.75;transform:scale(.97)}50%{opacity:1;transform:scale(1.04)}}
+
+/* ---------- header: language blob · logo · menu (site-nav) ---------- */
+.bi-top{position:fixed;z-index:60;top:0;left:0;right:0;height:84px;display:flex;align-items:center;justify-content:flex-start;direction:ltr;padding-left:calc(24px + env(safe-area-inset-left,0px));pointer-events:none}
+.bi-top>*{pointer-events:auto}
+.bi-top::before{content:"";position:absolute;inset:0 0 -20px;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(40,4,48,.92),rgba(40,4,48,0));opacity:0;transition:opacity .35s}
+.bi-scrolled .bi-top::before{opacity:1}
+.bi-logo{display:block;line-height:0}
+.bi-top .bi-logo img{height:46px;width:auto;filter:drop-shadow(0 3px 10px rgba(50,0,60,.35));transition:transform .3s}
+.bi-top .bi-logo:hover img{transform:scale(1.04)}
+.bi-logo:focus-visible{outline:2px solid var(--brand-mint);outline-offset:6px;border-radius:8px}
+.bi-folder:focus-visible,.bi-case-nav button:focus-visible,.bi-pop-btn:focus-visible{outline:2px solid var(--brand-mint);outline-offset:4px}
+
+/* ---------- hero ---------- */
+main{position:relative;z-index:1}
+.bi-hero{position:relative;width:min(1040px,calc(100% - 220px));margin-inline:auto;min-height:min(820px,100svh);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:20px;padding:100px 0 30px}
+.bi-hero-text{position:relative;z-index:2;max-width:560px;justify-self:end;width:auto}
+.bi-hero-waves{position:absolute;z-index:0;left:-14%;top:-6%;width:128%;height:118%;pointer-events:none}
+html[dir="rtl"] .bi-hero-waves{transform:scaleX(-1)}
+.bi-label{margin:0 0 6px;font:400 34px/1.1 "Feeling Passionate",cursive;color:#FFE13D;text-shadow:0 0 18px rgba(255,225,61,.35)}
+.bi-title{margin:0;font:900 clamp(60px,8.2vw,124px)/.92 "MuseoModerno",sans-serif;letter-spacing:-.02em;
+  color:#fff;text-shadow:0 6px 30px rgba(60,0,70,.4)}
+.bi-lead{margin:22px 0 0;max-width:520px;font-size:20px;line-height:1.55;color:var(--brand-mint)}
+.bi-title .ln{display:block}
+.bi-label{display:inline-block;white-space:nowrap}
+html[dir="rtl"] .bi-label{font:400 22px/1.3 "Lemon Brush Arabic",cursive;margin-bottom:10px}
+html[dir="rtl"] .bi-title{font:400 clamp(52px,6.6vw,96px)/1.15 "Mohawla",sans-serif;letter-spacing:0}
+html[dir="rtl"] .bi-lead{font-size:17px;line-height:1.9}
+/* lines fitted by bi.js: every line of the title ends at the same point (shorter line = bigger words), same for the lead */
+.bi-fit{display:inline-block;max-width:100%}
+.bi-fit .ln{display:block;white-space:nowrap;width:max-content}
+.bi-title.bi-fit .ln{line-height:.88}
+.bi-lead.bi-fit{max-width:none;line-height:1.75}
+html[dir="ltr"] .bi-lead.bi-fit{line-height:1.5}
+.bi-hero-flower{--fw:min(580px,41vw);--cx:52%;position:relative;height:100%;min-height:500px}
+.bi-hero-flower{z-index:1}
+.bi-hero-text{z-index:3}
+.bi-bloom{position:absolute;top:50%;left:var(--cx);width:var(--fw);aspect-ratio:1000/1090;transform:translate(-50%,-50%);visibility:hidden;opacity:0;filter:brightness(3) blur(16px)}
+.fl-ar{aspect-ratio:1000/1264;width:calc(var(--fw) * .9)}
+.bi-bloom .or-sway{position:absolute;inset:0;animation:biSway 16s ease-in-out infinite;will-change:transform;transform-origin:50% 90%}
+.or-art{position:absolute;inset:0;width:100%;height:100%;user-select:none;-webkit-user-drag:none}
+/* the light coming out of the flower: mauve in the middle, turning fuchsia, fading into the page */
+.or-light{position:absolute;left:-8%;right:-8%;top:-6%;height:86%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(196,140,255,.62) 0%,rgba(150,70,210,.5) 28%,rgba(202,18,194,.36) 58%,rgba(202,18,194,0) 100%);
+  animation:biGlow 6s ease-in-out infinite}
+.fl-ar .or-light{top:-4%;height:72%}
+.bi-front-liquid{position:absolute;z-index:2;left:calc(var(--cx) - var(--fw) * .62);top:calc(50% - var(--fw) * .5);width:calc(var(--fw) * 1.24);height:calc(var(--fw) * 1.14);pointer-events:none}
+/* appears with light, each time the language changes */
+.bi-ready .bi-bloom.on{visibility:visible;opacity:1;filter:brightness(1) blur(0);transition:opacity 1.5s ease .15s,filter 2.6s cubic-bezier(.2,.7,.2,1) .15s}
+.bi-ready .bi-bloom.on.lit{filter:none;transition:none}
+
+/* entrance (from the Services card's indigo curtain) */
+.bi-curtain{position:fixed;inset:0;z-index:80;pointer-events:none;background:radial-gradient(120% 90% at 50% 50%,#9A0E95 0%,#5A0868 45%,#330540 100%);opacity:0;visibility:hidden}
+.bi-enter .bi-curtain{opacity:1;visibility:visible;transition:opacity .4s ease}
+.bi-ready .bi-curtain{opacity:0;visibility:hidden;transition:opacity .9s ease .1s,visibility 0s 1s}
+.bi-js .bi-hero-text>*{opacity:0;transform:translateY(26px)}
+.bi-ready .bi-hero-text>*{opacity:1;transform:none;transition:opacity 1s ease,transform 1.1s cubic-bezier(.2,.8,.2,1)}
+.bi-ready .bi-hero-text>:nth-child(1){transition-delay:.25s}.bi-ready .bi-hero-text>:nth-child(2){transition-delay:.38s}.bi-ready .bi-hero-text>:nth-child(3){transition-delay:.52s}
+.fl-bloom{position:absolute;inset:0}
+
+/* ---------- the six glass folders (square, like the reference) ---------- */
+.bi-work{position:relative;z-index:4;width:min(900px,calc(100% - 64px));margin:0 auto;padding:20px 0 110px}
+.bi-grid{--fwid:clamp(170px,calc((100vh - 190px) / 2.05),250px);list-style:none;margin:0 auto;padding:0;display:grid;grid-template-columns:repeat(3,var(--fwid));justify-content:center;column-gap:clamp(30px,5vw,64px);row-gap:clamp(34px,6vh,56px)}
+.bi-item{display:flex;justify-content:center}
+/* they appear with light: a bright, soft flash that settles into the glass */
+.bi-js .bi-item{opacity:0}
+.bi-item.in{animation:bfLight 1.5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--d,0) * 150ms)}
+.bi-item.lit{opacity:1;animation:none}
+@keyframes bfLight{0%{opacity:0;filter:brightness(2.8) blur(12px);transform:translateY(22px) scale(.95)}45%{opacity:1;filter:brightness(1.8) blur(2px)}100%{opacity:1;filter:brightness(1) blur(0);transform:none}}
+
+.bi-folder{--rx:0deg;--ry:0deg;--lift:0px;position:relative;display:block;width:100%;max-width:var(--fwid,290px);aspect-ratio:100/92;text-decoration:none;color:#fff;-webkit-tap-highlight-color:transparent;outline:none}
+.bf-float{position:absolute;inset:0;animation:bfFloat 6.5s ease-in-out infinite;animation-delay:calc(var(--d,0) * -1.1s);will-change:transform}
+@keyframes bfFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-7px,0)}}
+.bf-tilt{position:absolute;inset:0;transform:perspective(1000px) translateY(var(--lift)) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.bi-folder.on .bf-tilt{--lift:-10px}
+
+/* back panel */
+.bf-back{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.bf-back .bk-fill{fill:url(#bfBackFill)}
+.bf-back .bk-rim{fill:none;stroke:url(#bfRim);stroke-width:1.3;vector-effect:non-scaling-stroke}
+
+/* three project images fanned inside the folder */
+.bf-docs{position:absolute;z-index:1;left:8%;right:8%;top:1%;height:64%}
+.bf-doc{position:absolute;margin:0;width:60%;height:80%;border-radius:9px;overflow:hidden;background:linear-gradient(160deg,#fff4fd,#f0d6f2);
+  box-shadow:0 10px 22px rgba(40,2,40,.45),0 0 0 1px rgba(255,255,255,.6) inset;transition:transform .65s cubic-bezier(.2,.8,.2,1)}
+.bf-doc img{width:100%;height:100%;object-fit:cover;object-position:var(--focus,50% 50%)}
+.bf-doc.fit-contain{background:#fff}.bf-doc.fit-contain img{object-fit:contain}
+.bf-doc.d3{left:0;top:10%;transform:rotate(-9deg);z-index:1}
+.bf-doc.d2{left:40%;top:8%;transform:rotate(8deg);z-index:2}
+.bf-doc.d1{left:20%;top:18%;transform:rotate(-1deg);z-index:3}
+.bi-folder.on .bf-doc.d3{transform:translate(-7%,-12%) rotate(-14deg)}
+.bi-folder.on .bf-doc.d2{transform:translate(7%,-12%) rotate(13deg)}
+.bi-folder.on .bf-doc.d1{transform:translateY(-14%) rotate(-2deg)}
+.bf-doc.empty::before{content:"";position:absolute;left:12%;right:12%;top:14%;height:44%;border-radius:6px;background:linear-gradient(120deg,rgba(202,18,194,.22),rgba(155,92,255,.2),rgba(255,168,53,.2))}
+.bf-doc.empty::after{content:"";position:absolute;left:12%;top:68%;width:56%;height:6px;border-radius:6px;background:rgba(120,30,120,.18);box-shadow:0 12px 0 -1px rgba(120,30,120,.12)}
+
+/* glass front with the folder step (shape set by bi.js as --fshape) */
+.bf-front{position:absolute;z-index:3;left:0;right:0;bottom:0;height:60.9%;clip-path:var(--fshape,inset(0 round 14px));
+  background:linear-gradient(180deg,rgba(236,196,255,.36) 0%,rgba(150,80,190,.34) 28%,rgba(92,36,110,.64) 68%,rgba(58,16,74,.8) 100%);
+  -webkit-backdrop-filter:blur(15px) saturate(170%);backdrop-filter:blur(15px) saturate(170%)}
+.bf-rim{position:absolute;z-index:4;left:0;right:0;bottom:0;height:60.9%;width:100%;overflow:visible;pointer-events:none;
+  filter:drop-shadow(0 0 5px rgba(255,120,220,.85)) drop-shadow(0 0 14px rgba(230,40,200,.45))}
+.bf-rim path{fill:none;stroke:url(#bfFrontRim);stroke-width:1.8;vector-effect:non-scaling-stroke}
+.bf-shine{position:absolute;inset:-20% -60%;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.3) 48%,rgba(255,255,255,.06) 53%,transparent 60%);
+  transform:translateX(-60%);animation:bfShine 9s ease-in-out infinite;animation-delay:calc(var(--d,0) * 1.3s);opacity:.7;transition:opacity .4s}
+@keyframes bfShine{0%,62%{transform:translateX(-60%)}86%,100%{transform:translateX(60%)}}
+.bi-folder.on .bf-shine{opacity:1}
+.bf-caustic{position:absolute;left:-10%;right:-10%;bottom:-35%;height:70%;pointer-events:none;background:radial-gradient(closest-side,rgba(255,60,200,.34),rgba(202,18,194,0))}
+.bf-glow{position:absolute;z-index:2;left:2%;right:2%;bottom:1%;height:52%;border-radius:18px;pointer-events:none;
+  box-shadow:0 0 24px rgba(220,80,230,.45),0 0 56px rgba(92,36,110,.6);opacity:.55;animation:bfGlow 5.5s ease-in-out infinite;animation-delay:calc(var(--d,0) * -.9s);transition:opacity .5s}
+@keyframes bfGlow{0%,100%{opacity:.45}50%{opacity:.8}}
+.bi-folder.on .bf-glow{opacity:1;animation:none}
+
+/* label row */
+.bf-meta{position:absolute;z-index:5;left:7%;right:6%;bottom:9%;display:flex;align-items:center;gap:10px}
+.bf-logo{flex:0 0 auto;width:calc(var(--fwid,290px) * .13);height:calc(var(--fwid,290px) * .13);display:grid;place-items:center}
+.bf-logo img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(40,2,40,.35))}
+.bf-txt{flex:1 1 auto;min-width:0}
+.bf-name{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font:800 calc(var(--fwid,290px) * .066)/1.08 "MuseoModerno",sans-serif;letter-spacing:-.005em;text-shadow:0 2px 12px rgba(50,0,60,.5)}
+.bf-tag{display:block;margin-top:3px;font-size:calc(var(--fwid,290px) * .044);line-height:1.25;color:rgba(255,240,252,.9);text-shadow:0 1px 8px rgba(50,0,60,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[dir="rtl"] .bf-tag{font-family:"Montserrat Arabic",system-ui,sans-serif}
+.bf-arrow{flex:0 0 auto;width:calc(var(--fwid,290px) * .118);height:calc(var(--fwid,290px) * .118);border-radius:50%;display:grid;place-items:center;background:#fff;color:#4A0759;box-shadow:0 4px 14px rgba(60,0,70,.35);
+  transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.bf-arrow svg{width:44%;height:44%}
+.bi-folder.on .bf-arrow{transform:rotate(-45deg) scale(1.08);box-shadow:0 0 18px rgba(255,140,240,.8)}
+html[dir="rtl"] .bf-arrow svg{transform:scaleX(-1)}
+html[dir="rtl"] .bi-folder.on .bf-arrow{transform:rotate(45deg) scale(1.08)}
+
+/* floor shadow */
+.bf-shadow{position:absolute;left:12%;right:12%;bottom:-24px;height:24px;border-radius:50%;background:radial-gradient(closest-side,rgba(30,0,30,.6),rgba(30,0,30,0));
+  animation:bfShadow 6.5s ease-in-out infinite;animation-delay:calc(var(--d,0) * -1.1s);transition:opacity .5s}
+@keyframes bfShadow{0%,100%{transform:scaleX(1);opacity:.85}50%{transform:scaleX(.9);opacity:.6}}
+.bi-folder.on .bf-shadow{opacity:.5}
+@media (hover:none){.bf-tilt{transform:translateY(var(--lift))}}
+
+/* paused when off screen (saves battery) */
+.bi-item:not(.vis) .bf-float,.bi-item:not(.vis) .bf-shine,.bi-item:not(.vis) .bf-glow,.bi-item:not(.vis) .bf-shadow{animation-play-state:paused}
+
+/* ---------- project pop-up: black glass, thin mauve → fuchsia frame, page blurred behind ---------- */
+.bi-case{position:fixed;inset:0;z-index:1200;display:grid;place-items:center}
+.bi-case[hidden]{display:none}
+.bi-veil{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 40%,rgba(30,4,38,.38),rgba(8,1,12,.66));
+  -webkit-backdrop-filter:blur(14px) saturate(1.1);backdrop-filter:blur(14px) saturate(1.1)}
+.bi-pop{--r:28px;position:relative;width:min(1280px,calc(100vw - 72px));height:calc(100dvh - 56px);border-radius:var(--r);
+  background:linear-gradient(160deg,rgba(26,14,30,.72),rgba(4,2,6,.78) 45%,rgba(10,4,14,.82));
+  -webkit-backdrop-filter:blur(26px) saturate(1.25);backdrop-filter:blur(26px) saturate(1.25);
+  box-shadow:0 40px 120px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03),0 0 46px rgba(202,18,194,.22),0 0 110px rgba(92,36,110,.4);isolation:isolate}
+/* the thin luminous frame (mauve → fuchsia), drawn as a 1.5px ring */
+.bi-pop-frame{position:absolute;inset:0;z-index:4;border-radius:inherit;padding:1.5px;pointer-events:none;
+  background:linear-gradient(135deg,#B07CFF 0%,#5C246E 28%,#9B1FA8 55%,#CA12C2 78%,#FF4FD8 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+  filter:drop-shadow(0 0 6px rgba(202,18,194,.55))}
+/* glass reflections: a soft light on the top edge and one diagonal sheen */
+.bi-pop-sheen{position:absolute;inset:0;z-index:3;border-radius:inherit;pointer-events:none;overflow:hidden;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),transparent 90px),radial-gradient(60% 40% at 12% 0%,rgba(176,124,255,.12),transparent 70%),radial-gradient(50% 40% at 100% 100%,rgba(202,18,194,.10),transparent 70%)}
+.bi-pop-sheen::after{content:"";position:absolute;top:-40%;left:-30%;width:30%;height:180%;transform:rotate(18deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.045),transparent)}
+.bi-case-scroll{position:absolute;inset:0;z-index:2;border-radius:inherit;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;scrollbar-color:rgba(202,18,194,.45) transparent;
+  -webkit-mask:linear-gradient(180deg,transparent 0,#000 76px);mask:linear-gradient(180deg,transparent 0,#000 76px)}
+.bi-case-inner{width:calc(100% - clamp(48px,8vw,120px));margin:0 auto;padding:clamp(56px,7vh,84px) 0 56px}
+/* controls: previous · next · close (minimal glass circles) */
+.bi-pop-ctrl{position:absolute;z-index:5;top:16px;inset-inline-end:16px;display:flex;gap:8px}
+.bi-pop-btn{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;padding:0;border:1px solid rgba(255,255,255,.18);
+  background:rgba(20,8,24,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;transition:background .25s,border-color .25s,transform .25s}
+.bi-pop-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.bi-pop-btn:hover{background:rgba(202,18,194,.35);border-color:rgba(255,120,230,.6);transform:translateY(-1px)}
+.bi-pop-close{margin-inline-start:6px}
+html[dir="rtl"] .bi-pop-prev svg,html[dir="rtl"] .bi-pop-next svg{transform:scaleX(-1)}
+
+/* ---------- mood board: head (logo + name + intro) ---------- */
+.mb-head{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:clamp(24px,3.4vw,52px);margin-bottom:clamp(40px,6vw,84px)}
+.mb-head.no-logo{grid-template-columns:1fr}
+.mb-logo{position:relative;justify-self:center;width:clamp(150px,16vw,230px)}
+.mb-logo::before{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle,rgba(202,18,194,.32),transparent 68%);filter:blur(30px);z-index:-1}
+.mb-logo img{width:100%;height:auto;animation:mbFloat 7s ease-in-out infinite}
+.mb-intro .bi-label{font-size:24px;margin-bottom:2px}
+.bi-case-name{margin:0;font:900 clamp(34px,4vw,56px)/.95 "MuseoModerno",sans-serif;letter-spacing:-.02em;text-shadow:0 6px 30px rgba(0,0,0,.4)}
+.mb-tag{margin:10px 0 0;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--brand-mint)}
+.bi-case-desc{margin:16px 0 0;max-width:none;font-size:16px;line-height:1.65;color:rgba(255,255,255,.82)}
+html[dir="rtl"] .mb-intro .bi-label{font-size:22px}
+html[dir="rtl"] .mb-tag{letter-spacing:0;font-size:15px}
+html[dir="rtl"] .bi-case-desc{font-size:16px;line-height:1.9}
+
+/* ---------- mood board: the composition (every piece placed in % of the board width) ---------- */
+.mb-board{position:relative;container-type:inline-size;aspect-ratio:100 / var(--h)}
+.mb-board>*{position:absolute;inset-inline-start:calc(var(--x) * 1cqw);top:calc(var(--y) * 1cqw);width:calc(var(--w) * 1cqw);margin:0;rotate:var(--r)}
+.mb-pc img{width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+/* looks: card = flat print with a soft shadow · post = social post (keeps its own white frame) · cut = cut-out product with its own shadow · melt = scene that fades into the glass */
+.mb-card img{border-radius:6px;box-shadow:0 28px 60px rgba(0,0,0,.6),0 6px 16px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.06)}
+.mb-post img{filter:drop-shadow(0 26px 40px rgba(0,0,0,.55)) drop-shadow(0 4px 10px rgba(0,0,0,.35))}
+.mb-cut img{filter:drop-shadow(0 30px 34px rgba(0,0,0,.5))}
+.mb-melt img{-webkit-mask:radial-gradient(closest-side,#000 62%,transparent);mask:radial-gradient(closest-side,#000 62%,transparent)}
+.mb-pc{transition:translate .5s cubic-bezier(.2,.8,.2,1)}
+@media (hover:hover){.mb-card:hover,.mb-post:hover,.mb-cut:hover{translate:0 -6px}}
+/* small section words, in the site's handwriting */
+.mb-cap{width:auto!important;white-space:nowrap;font:400 clamp(20px,2.3cqw,32px)/1 "Feeling Passionate",cursive;color:#FFE13D;text-shadow:0 0 16px rgba(255,225,61,.3);rotate:-4deg}
+html[dir="rtl"] .mb-cap{font:400 clamp(16px,1.7cqw,24px)/1.3 "Lemon Brush Arabic",cursive;rotate:3deg}
+/* colour palette + typography: information only, in the website's own fonts */
+/* the menu: a real book that turns its pages */
+/* colours: each brand colour as its app-icon box, with the code under it */
+.mb-colors{list-style:none;margin:0;padding:0;display:flex;gap:clamp(14px,1.8vw,26px)}
+.mb-colors li{display:flex;flex-direction:column;align-items:center;gap:10px}
+.mb-colors .ic{width:clamp(84px,9vw,124px);height:auto;filter:drop-shadow(0 14px 22px rgba(0,0,0,.5))}
+.mb-colors .sw{width:clamp(44px,4.4vw,58px);aspect-ratio:1;border-radius:10px;background:var(--c);box-shadow:0 10px 22px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.2)}
+.mb-colors b{font:900 12.5px/1 var(--rounded);letter-spacing:.05em;color:rgba(255,255,255,.9);direction:ltr}
+/* fonts: every language and its font on one line */
+.mb-type{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 34px}
+.mb-type>div{display:flex;align-items:baseline;gap:10px}
+.mb-type dt{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand-mint)}
+html[dir="rtl"] .mb-type dt{letter-spacing:0;text-transform:none;font-size:13px}
+.mb-type dd{margin:0;font:900 18px/1.2 var(--rounded);color:#fff;direction:ltr}
+/* pictures that open large: a gentle float + a pulsing "click" sign */
+.mb-zoom{cursor:zoom-in;animation:mbBob 5.5s ease-in-out infinite;animation-delay:calc(var(--i,0) * -1.4s)}
+@keyframes mbBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.mb-tap{position:absolute;inset-inline-end:-8px;bottom:-10px;width:clamp(30px,3vw,40px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;z-index:2;
+  background:linear-gradient(135deg,#B07CFF,#CA12C2);box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 0 2px rgba(255,255,255,.85);pointer-events:none}
+.mb-tap::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #FF4FD8;animation:mbPing 2.2s ease-out infinite}
+.mb-tap svg{width:62%;height:62%;fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.mb-tap .cur{fill:#fff;stroke:none}
+@keyframes mbPing{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+@media (hover:hover){.mb-zoom:hover{animation-play-state:paused}.mb-zoom:hover .mb-tap{transform:scale(1.1)}}
+/* a post opened large */
+.mb-lightbox{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:clamp(56px,7vh,80px) 16px 24px;background:rgba(6,1,10,.72);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .3s ease}
+.mb-lightbox[hidden]{display:none}
+.mb-lightbox.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.mb-lightbox,.mb-lightbox img{transition:none}.mb-zoom,.mb-tap::before{animation:none}}
+.mb-lightbox img{max-width:min(92vw,760px);max-height:calc(100dvh - 150px);width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));
+  transform:scale(.92);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.mb-lightbox.on img{transform:none}
+.mb-lb-close{position:absolute;top:20px;inset-inline-end:20px}
+.mb-bookwrap{text-align:center}
+/* ---------- sections: each title sits beside its content ---------- */
+/* ---------- sections: small white title in the site's heading font + a thin white line ---------- */
+.mb-sec-t{margin:0;flex:none;font:800 15px/1.2 "MuseoModerno",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#fff;white-space:normal}
+.mb-sec-t.st-all{white-space:pre-line}
+html[dir="rtl"] .mb-sec-t{font:400 21px/1.3 "Mohawla",sans-serif;letter-spacing:0;text-transform:none}
+.mb-rule{display:block;background:rgba(255,255,255,.4)}
+/* block: title on the reading side, the line runs on, the content sits centred below */
+.mb-block .mb-sec-h{display:flex;align-items:center;gap:18px;margin-bottom:clamp(26px,3.4vw,46px)}
+.mb-block .mb-rule{flex:1;height:1px}
+/* inline: title · short upright line · content, centred as one group */
+.mb-inline{display:flex;align-items:center;justify-content:center;gap:clamp(18px,2.4vw,34px)}
+.mb-inline .mb-rule{width:1px;align-self:stretch;min-height:44px}
+.mb-sec{opacity:0;translate:0 34px;transition:opacity .9s ease,translate 1s cubic-bezier(.2,.8,.2,1)}
+.mb-sec.in{opacity:1;translate:0 0}
+.mb-sec .mb-board>*{opacity:1;translate:0 0}
+/* main colours: small squares */
+.mb-parts{display:grid;gap:clamp(44px,6vw,90px)}
+.mb-book{position:relative;width:min(76%,860px);aspect-ratio:1414 / 1000;margin:0 auto;perspective:2600px;touch-action:pan-y;cursor:pointer;
+  user-select:none;-webkit-user-select:none;transition:translate 1s cubic-bezier(.45,.05,.3,1)}
+.mb-book.at-start{translate:-25% 0}
+.mb-book.at-end{translate:25% 0}
+/* soft shadow on the table under whatever pages are showing */
+.mb-book::before{content:"";position:absolute;left:4%;right:4%;bottom:-4%;height:9%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.65),transparent);filter:blur(8px);z-index:-1;transition:left 1s,right 1s}
+.mb-book.at-start::before{left:54%}
+.mb-book.at-end::before{right:54%}
+.mb-leaf{position:absolute;top:0;left:50%;width:50%;height:100%;transform-style:preserve-3d;transform-origin:0 50%;transition:transform 1.1s cubic-bezier(.45,.05,.3,1)}
+.mb-leaf.is-turned{transform:rotateY(-180deg)}
+.mb-face{position:absolute;inset:0;overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden;background:#1b1b1b;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.mb-front{border-radius:0 5px 5px 0}
+.mb-back{transform:rotateY(180deg);border-radius:5px 0 0 5px}
+.mb-face img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+/* the spine: pages darken a little where they meet, like real paper */
+.mb-face::after{content:"";position:absolute;inset:0;pointer-events:none}
+.mb-front::after{background:linear-gradient(90deg,rgba(0,0,0,.42),rgba(0,0,0,.08) 5%,transparent 12%,transparent 94%,rgba(255,255,255,.05))}
+.mb-back::after{background:linear-gradient(270deg,rgba(0,0,0,.42),rgba(0,0,0,.08) 5%,transparent 12%)}
+/* while a page turns, light sweeps across it */
+.mb-leaf.turning .mb-face::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;animation:mbTurnLight 1.1s ease both}
+.mb-leaf.turning .mb-front::before{background:linear-gradient(90deg,transparent,rgba(0,0,0,.45))}
+.mb-leaf.turning .mb-back::before{background:linear-gradient(270deg,transparent,rgba(0,0,0,.45))}
+@keyframes mbTurnLight{0%{opacity:0}50%{opacity:1}100%{opacity:0}}
+/* closed book: a hint that the cover lifts */
+@media (hover:hover){.mb-book.at-start .mb-leaf:first-child:hover{transform:rotateY(-14deg)}}
+.mb-book-ctrl{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:clamp(26px,3vw,38px)}
+.mb-book-ctrl .bi-pop-btn:disabled{opacity:.3;pointer-events:none}
+.mb-bk-dots{display:flex;gap:8px}
+.mb-bk-dots i{width:7px;height:7px;border-radius:99px;background:rgba(255,255,255,.28);transition:width .4s,background .4s}
+.mb-bk-dots i.on{width:22px;background:linear-gradient(90deg,#B07CFF,#CA12C2)}
+.mb-bk-hint{margin:12px 0 0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+html[dir="rtl"] .mb-bk-hint{letter-spacing:0;text-transform:none;font-size:13px}
+
+/* pieces rise into place as they scroll into view */
+.mb-board>*{opacity:0;translate:0 34px;transition:opacity .9s ease,translate 1s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i,0) % 4 * 90ms)}
+.mb-board>*.in{opacity:1;translate:0 0}
+@keyframes mbFloat{0%,100%{translate:0 0}50%{translate:0 -8px}}
+/* a project without a board yet: images one under the other */
+.mb-board.mb-free{height:auto;display:grid;gap:22px}
+.mb-board.mb-free>*{position:static;opacity:1;translate:none;width:auto}
+.mb-flow img{width:100%;height:auto;border-radius:14px}
+.bi-empty{padding:56px 24px;border-radius:24px;text-align:center;color:rgba(235,232,255,.75);border:1px dashed rgba(255,255,255,.25);background:rgba(255,255,255,.04)}
+.bi-case-nav{display:flex;justify-content:space-between;gap:14px;margin-top:clamp(40px,5vw,72px);padding-top:28px;border-top:1px solid rgba(255,255,255,.12)}
+.bi-case-nav button{background:none;border:0;padding:6px 0;text-align:start;font:800 20px/1.2 "MuseoModerno",sans-serif;color:#fff;opacity:.85;transition:opacity .25s,transform .25s}
+.bi-case-nav button small{display:block;font:600 12px/1.4 var(--rounded);letter-spacing:.12em;text-transform:uppercase;color:var(--brand-mint);opacity:.9}
+html[dir="rtl"] .bi-case-nav button small{font-family:"Montserrat Arabic",system-ui,sans-serif;letter-spacing:0}
+.bi-case-nav button:hover{opacity:1;transform:translateY(-2px)}
+.bi-next{text-align:end!important}
+.bi-lock,.bi-lock body{overflow:hidden}
+
+/* ---------- footer: logo only ---------- */
+.bi-foot{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;width:min(1240px,calc(100% - 64px));margin:0 auto;padding:30px 0 38px;border-top:1px solid rgba(255,255,255,.16)}
+.bi-foot .bi-logo img{height:54px;width:auto}
+.bi-up{display:inline-flex;align-items:center;gap:8px;color:#FFE13D;text-decoration:none;font-size:14px;transition:color .25s}.bi-up:hover{color:#fff}
+.bi-up svg{width:20px;height:20px;flex:none}
+html[dir="rtl"] .bi-up svg{transform:scaleX(-1)}   /* the arrow points out of the door on the reading side */
+
+/* ---------- tablet ---------- */
+@media (max-width:1024px){
+  .bi-hero{width:calc(100% - 64px)}
+}
+@media (max-width:900px){
+  .bi-grid{--fwid:min(240px,40vw);grid-template-columns:repeat(2,var(--fwid));column-gap:40px;row-gap:50px}
+}
+
+/* ---------- phones: a dedicated layout ---------- */
+@media (max-width:640px){
+  body{font-size:15px}
+  .bi-top{height:70px}
+  .bi-top .bi-logo img{height:34px}
+  .bi-top{padding-left:calc(14px + env(safe-area-inset-left,0px))}
+  .bi-hero{width:calc(100% - 36px);display:block;min-height:calc(40px + 74vw);padding:92px 0 8px}
+  .bi-hero-waves{display:none}
+  .bi-hero-flower{position:absolute;top:58px;right:-30vw;width:88vw;height:84vw;min-height:0}
+  .bi-hero-flower{--fw:72vw;--cx:50%}
+  html[dir="rtl"] .bi-hero-flower{--fw:58vw;top:44px}
+  html[dir="rtl"] .bi-hero-flower{right:auto;left:-30vw}
+  .bi-hero-text{max-width:74%;padding-bottom:2vw;justify-self:auto}
+  .bi-title{text-shadow:0 4px 22px rgba(60,0,70,.55)}
+  .bi-label{font-size:27px}
+  html[dir="rtl"] .bi-label{font-size:16px;margin-bottom:6px}
+  .bi-title{font-size:clamp(46px,13.6vw,64px)}
+  html[dir="rtl"] .bi-title{font-size:clamp(40px,11.5vw,56px)}
+  .bi-lead{font-size:13.5px;margin-top:12px}
+  html[dir="rtl"] .bi-lead{font-size:13px}
+  .bi-work{width:calc(100% - 28px);padding:6px 0 80px}
+  .bi-grid{--fwid:min(140px,38vw);grid-template-columns:repeat(2,var(--fwid));column-gap:22px;row-gap:30px}
+  .bf-doc{border-radius:6px}
+  .bf-front{-webkit-backdrop-filter:blur(9px) saturate(150%);backdrop-filter:blur(9px) saturate(150%)}
+  .bf-rim{filter:drop-shadow(0 0 4px rgba(255,120,235,.75))}
+  .bf-meta{left:7%;right:6%;bottom:8%;gap:6px}
+  .bf-name{font-size:10.5px}
+  .bf-tag{font-size:8px;margin-top:1px}
+  .bf-meta{gap:5px}
+
+  .bf-glow{box-shadow:0 0 14px rgba(255,60,200,.4),0 0 30px rgba(202,18,194,.26)}
+  .bf-shadow{bottom:-16px;height:16px}
+  .bi-foot{width:calc(100% - 36px)}
+  .bi-foot .bi-logo img{height:40px}
+}
+/* ---------- pop-up on phones: almost full screen, one column head ---------- */
+@media (max-width:760px){
+  .bi-pop{--r:22px;width:calc(100vw - 20px);height:calc(100dvh - 20px)}
+  .bi-case-inner{width:calc(100% - 36px);padding:70px 0 40px}
+  .bi-pop-ctrl{top:12px;inset-inline-end:12px;gap:6px}
+  .bi-pop-btn{width:38px;height:38px}
+  /* head: small logo beside the name, the intro under both */
+  .mb-head{grid-template-columns:auto minmax(0,1fr);column-gap:14px;row-gap:0;align-items:center;margin-bottom:38px}
+  .mb-intro{display:contents}
+  .mb-logo{grid-column:1;grid-row:1 / span 3;width:clamp(76px,24vw,104px)}
+  .mb-logo::before{inset:0;filter:blur(18px)}
+  .mb-intro .bi-label{grid-column:2;font-size:20px;margin:0;text-align:start}
+  html[dir="rtl"] .mb-intro .bi-label{font-size:16px}
+  .bi-case-name{grid-column:2;font-size:clamp(26px,8.4vw,40px);text-align:start}
+  .mb-tag{grid-column:2;margin-top:6px;font-size:10.5px;text-align:start}
+  html[dir="rtl"] .mb-tag{font-size:12.5px}
+  .bi-case-desc{grid-column:1 / -1;margin:20px 0 0;max-width:none;font-size:13.5px;line-height:1.75;text-align:start}
+  html[dir="rtl"] .bi-case-desc{font-size:14px;line-height:1.9}
+  .mb-book{width:100%}
+  .mb-sec-t{font-size:12px}
+  html[dir="rtl"] .mb-sec-t{font-size:17px}
+  .mb-sec-t.st-m{white-space:pre-line}
+  .mb-inline{justify-content:flex-start;gap:14px}
+  .mb-colors{gap:10px}.mb-colors .ic{width:clamp(56px,17vw,74px)}.mb-colors li{gap:7px}.mb-colors b{font-size:9.5px}
+  .mb-type{flex-direction:column;align-items:flex-start;gap:8px}.mb-type>div{gap:8px}.mb-type dt{font-size:9.5px}
+  html[dir="rtl"] .mb-type dt{font-size:11.5px}
+  .mb-type dd{font-size:14px}
+  .mb-block .mb-sec-h{gap:12px}
+  .bi-case-nav button{font-size:16px}
+}
+/* very narrow phones: one folder per row, readability first */
+@media (max-width:340px){
+  .bi-grid{--fwid:180px;grid-template-columns:var(--fwid);row-gap:40px}
+  .bf-name{font-size:16px}.bf-tag{font-size:11px}
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .or-sway,.or-light,.bf-float,.bf-shine,.bf-glow,.bf-shadow,.bi-item.in{animation:none!important}
+  .bi-js .bi-item,.bi-ready .bi-bloom.on{opacity:1!important;filter:none!important}
+  .bf-tilt,.bf-doc,.bf-front,.bf-arrow{transition-duration:.01s!important}
+  .bi-js .bi-hero-text>*,.bi-js .bi-item{transform:none!important}
+  .mb-board>*,.mb-sec{opacity:1!important;translate:none!important;transition:none!important}.mb-leaf,.mb-book{transition:none!important}.mb-logo img{animation:none}
+}
+
+/* =====================================================================
+   Mood-board pieces added with the Government Innovation Hackathon
+   ===================================================================== */
+/* section titles beside the content (laptop, two lines) / above it (phone, one line) */
+.mb-parts{position:relative}
+.mb-parts>.mb-sec{position:relative;z-index:1}
+.t-side .mb-side{display:grid;grid-template-columns:clamp(112px,11vw,150px) 1px minmax(0,1fr);align-items:center;gap:clamp(18px,2.6vw,40px)}
+.t-side .mb-side .mb-sec-t{text-align:start}
+.t-side .mb-side .mb-rule{width:1px;align-self:stretch;min-height:44px}
+.t-side .mb-sec-colors .mb-sec-c,.t-side .mb-sec-type .mb-sec-c{display:flex}
+
+/* the identity's own arrows drifting behind the board, very transparent */
+.mb-deco{position:absolute;inset:0;z-index:0;pointer-events:none}
+.mb-deco img{position:absolute;inset-inline-start:calc(var(--x) * 1%);top:calc(var(--y) * 1%);width:calc(var(--w) * 1%);height:auto;opacity:var(--o);rotate:var(--r);
+  animation:mbDrift 18s ease-in-out infinite;animation-delay:calc(var(--i) * -3.1s)}
+@keyframes mbDrift{0%,100%{transform:translate3d(0,0,0) rotate(0)}50%{transform:translate3d(12px,-18px,0) rotate(7deg)}}
+
+/* a picture with its text beside it */
+.mb-story{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:center;gap:clamp(24px,3.2vw,52px)}
+.mb-story figure{position:relative;margin:0}
+.mb-story figure img{display:block}
+.mb-story-t{min-width:0}
+.mb-story-t p{margin:0;font-size:17px;line-height:1.75;color:rgba(255,255,255,.88)}
+html[dir="rtl"] .mb-story-t p{font-size:17px;line-height:2}
+.mb-scope{margin-top:clamp(18px,2.2vw,28px)}
+.mb-scope b{display:block;margin-bottom:10px;font:400 22px/1 "Feeling Passionate",cursive;color:#FFE13D}
+html[dir="rtl"] .mb-scope b{font:400 17px/1.3 "Lemon Brush Arabic",cursive}
+.mb-scope ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.mb-scope li{padding:7px 14px;border-radius:99px;border:1px solid rgba(39,246,197,.45);background:rgba(39,246,197,.06);font-size:12.5px;letter-spacing:.06em;color:#fff}
+html[dir="rtl"] .mb-scope li{letter-spacing:0;font-size:13.5px}
+
+/* the guide booklet: landscape pages bound at the top, they flip up */
+.mb-book.mb-book-top{width:min(58%,640px);aspect-ratio:1400 / 1576;perspective:2400px}
+.mb-book-top.at-start{translate:0 -25%}
+.mb-book-top.at-end{translate:0 25%}
+.mb-book-top .mb-leaf{top:50%;left:0;width:100%;height:50%;transform-origin:50% 0}
+.mb-book-top .mb-leaf.is-turned{transform:rotateX(180deg)}
+.mb-book-top .mb-face{border-radius:5px}
+.mb-book-top .mb-back{transform:rotateX(180deg)}
+.mb-book-top .mb-front::after{background:linear-gradient(180deg,rgba(0,0,0,.4),rgba(0,0,0,.06) 6%,transparent 14%)}
+.mb-book-top .mb-back::after{background:linear-gradient(0deg,rgba(0,0,0,.4),rgba(0,0,0,.06) 6%,transparent 14%)}
+.mb-book-top .mb-leaf.turning .mb-front::before{background:linear-gradient(180deg,transparent,rgba(0,0,0,.45))}
+.mb-book-top .mb-leaf.turning .mb-back::before{background:linear-gradient(0deg,transparent,rgba(0,0,0,.45))}
+.mb-book-top::before{left:6%;right:6%;bottom:-3%;height:7%;transition:bottom 1s}
+.mb-book-top.at-start::before{left:6%}
+.mb-book-top.at-end::before{right:6%;bottom:47%}
+@media (hover:hover){.mb-book-top.at-start .mb-leaf:first-child:hover{transform:rotateX(12deg)}}
+.mb-bw-top .mb-book-ctrl{margin-top:clamp(10px,1.4vw,18px)}
+.mb-bw-top .mb-book-ctrl svg{rotate:90deg}
+
+/* social media carousel */
+.mb-car{position:relative;height:clamp(380px,44vw,560px);touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.mb-slide{position:absolute;top:0;left:50%;height:100%;aspect-ratio:9 / 16;margin:0;translate:-50% 0;cursor:pointer;
+  transition:transform 1s cubic-bezier(.2,.8,.2,1),opacity 1s ease,filter 1s ease}
+.mb-slide img{display:block;width:100%;height:100%;object-fit:cover;border-radius:16px;box-shadow:0 30px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.08);pointer-events:none}
+.mb-slide[data-pos="0"]{z-index:3;transform:none;opacity:1;cursor:zoom-in}
+.mb-slide[data-pos="-1"]{z-index:2;transform:translateX(-66%) scale(.74);opacity:.35;filter:blur(1.5px)}
+.mb-slide[data-pos="1"]{z-index:2;transform:translateX(66%) scale(.74);opacity:.35;filter:blur(1.5px)}
+.mb-slide[data-pos="off"]{z-index:1;transform:scale(.5);opacity:0;pointer-events:none}
+.mb-slide .mb-tap{transition:opacity .5s}
+.mb-slide:not([data-pos="0"]) .mb-tap{opacity:0}
+.mb-car-dots{display:flex;justify-content:center;gap:8px;margin-top:clamp(18px,2.2vw,28px)}
+.mb-car-dots i{width:7px;height:7px;border-radius:99px;background:rgba(255,255,255,.28);cursor:pointer;transition:width .4s,background .4s}
+.mb-car-dots i.on{width:22px;background:linear-gradient(90deg,#B07CFF,#CA12C2)}
+
+/* compact head: square logo, and beside it the title group exactly as tall as the logo (size set by fitCompact in bi.js); the intro runs under both */
+.mb-head.h-compact{grid-template-columns:auto minmax(0,1fr);column-gap:clamp(18px,2.2vw,32px);row-gap:0;align-items:center}
+.mb-head.h-compact .mb-intro{display:contents}
+.mb-head.h-compact .mb-logo{grid-column:1;grid-row:1 / span 3;align-self:center;width:clamp(150px,13vw,180px)}
+.mb-head.h-compact .mb-logo img{display:block}
+.mb-head.h-compact .mb-intro .bi-label{grid-column:2;margin:0;font-size:15px;line-height:1.1;align-self:end}
+html[dir="rtl"] .mb-head.h-compact .mb-intro .bi-label{font-size:13px}
+.mb-head.h-compact .bi-case-name{grid-column:2;line-height:1.02;margin:4px 0 2px}
+html[dir="rtl"] .mb-head.h-compact .bi-case-name{font-family:"Mohawla",sans-serif;font-weight:400;line-height:1.25}   /* Arabic: the section-title font */
+.mb-head.h-compact .mb-tag{grid-column:2;margin:4px 0 0;align-self:start}
+.mb-head.h-compact .bi-case-desc{grid-column:1 / -1;margin-top:clamp(18px,2vw,26px)}
+.mb-flat img{filter:none}
+.bi-case-name.eq{white-space:nowrap}
+html[dir="rtl"] .mb-head.h-compact .bi-case-name.eq{line-height:1.12}
+.bi-case-name.eq .ln{display:table}
+/* centred pieces */
+.t-side .mb-sec-colors .mb-sec-c{justify-content:center}
+/* Design Scope: the same look as the section titles; the scope itself small, on one line */
+.mb-scope b{font:800 13px/1.2 "MuseoModerno",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#fff;margin-bottom:12px}
+html[dir="rtl"] .mb-scope b{font:400 19px/1.3 "Mohawla",sans-serif;letter-spacing:0;color:#fff}
+.mb-scope ul{flex-wrap:nowrap;gap:6px}
+.mb-scope li{flex:none;white-space:nowrap;padding:5px 10px;font-size:10.5px;letter-spacing:.04em}
+html[dir="rtl"] .mb-scope li{font-size:11.5px}
+/* smaller social media */
+.mb-car{height:clamp(300px,30vw,400px)}
+
+@media (max-width:760px){
+  .mb-head.h-compact .mb-logo{width:clamp(104px,32vw,132px)}
+  .mb-head.h-compact .mb-intro .bi-label{font-size:11.5px}
+  html[dir="rtl"] .mb-head.h-compact .mb-intro .bi-label{font-size:11px}
+  .t-side .mb-type{flex-direction:row;flex-wrap:nowrap;align-items:baseline;justify-content:center;gap:18px}
+  .t-side .mb-sec-type .mb-sec-c{justify-content:center}
+  .mb-scope b{font-size:11px}
+  html[dir="rtl"] .mb-scope b{font-size:16px}
+  .mb-scope ul{gap:4px}
+  .mb-scope li,html[dir="rtl"] .mb-scope li{padding:4px 6px;font-size:min(9.5px,2.25vw);letter-spacing:0}
+  .t-side .mb-side{grid-template-columns:auto minmax(0,1fr);gap:16px 12px}
+  .t-side .mb-side .mb-sec-t{white-space:nowrap}
+  .t-side .mb-side br.dk{display:none}
+  .t-side .mb-side .mb-rule{width:auto;height:1px;min-height:0;align-self:center}
+  .t-side .mb-side .mb-sec-c{grid-column:1 / -1}
+  .mb-story{grid-template-columns:1fr;gap:20px}
+  .mb-story-t p,html[dir="rtl"] .mb-story-t p{font-size:14px}
+  .mb-book.mb-book-top{width:78%}
+  .mb-car{height:clamp(240px,68vw,320px)}
+  .mb-slide[data-pos="-1"]{transform:translateX(-58%) scale(.7)}
+  .mb-slide[data-pos="1"]{transform:translateX(58%) scale(.7)}
+  .mb-deco img{width:calc(var(--w) * 1.7%)}
+}
+@media (prefers-reduced-motion:reduce){.mb-deco img{animation:none}.mb-slide{transition:none}}
+
+/* colour boxes as wide rectangles (board.swatch:'rect') */
+.mb-colors.rect .sw{width:clamp(76px,7.6vw,104px);aspect-ratio:2.1;border-radius:8px}
+/* Art Direction as text only */
+.mb-story.only{grid-template-columns:1fr}
+.mb-story.only .mb-story-t p{max-width:62ch}
+/* social media 3x3 grid: one design in a mauve frame, the rest a little see-through; a small zoom sign on each */
+.mb-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1vw,14px);width:min(100%,500px);margin:0 auto}
+.mb-gc{position:relative;margin:0;border-radius:8px;cursor:zoom-in;opacity:.42;transform:scale(.97);
+  transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1),box-shadow .8s ease;box-shadow:0 0 0 0 rgba(176,124,255,0)}
+.mb-gc img{display:block;width:100%;height:auto;border-radius:8px;user-select:none;-webkit-user-drag:none}
+.mb-gc.on{opacity:1;transform:scale(1.04);z-index:2;box-shadow:0 0 0 3px #B07CFF,0 0 0 5px rgba(202,18,194,.55),0 18px 40px rgba(0,0,0,.55),0 0 34px rgba(202,18,194,.35)}
+@media (hover:hover){.mb-gc:hover{opacity:.85}.mb-gc.on:hover{opacity:1}}
+.mb-gc:focus-visible{outline:2px solid #FFE13D;outline-offset:3px}
+.mb-zi{position:absolute;inset-inline-end:6px;bottom:6px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.42);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.mb-zi svg{width:11px;height:11px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round}
+@media (max-width:760px){
+  .mb-colors.rect .sw{width:clamp(54px,17vw,72px)}
+  .mb-grid{width:100%;gap:7px}
+  .mb-zi{width:17px;height:17px;inset-inline-end:4px;bottom:4px}.mb-zi svg{width:9px;height:9px}
+}
+@media (prefers-reduced-motion:reduce){.mb-gc{transition:none}}
+/* a Latin brand name keeps the English heading font in the Arabic page */
+html[dir="rtl"] .mb-head.h-compact .bi-case-name.lat,html[dir="rtl"] .bi-case-name.lat{font-family:"MuseoModerno",sans-serif;font-weight:900;line-height:1.02;direction:ltr;text-align:right}
+/* colours beside their title like the fonts (board.colorsAt:'start'); centred on the phone like the fonts */
+.t-side.c-start .mb-sec-colors .mb-sec-c{justify-content:flex-start}
+@media (max-width:760px){.t-side.c-start .mb-sec-colors .mb-sec-c{justify-content:center}}
+/* laptop social grid: 4 per row, 2 rows, the full width */
+.mb-grid.g4{grid-template-columns:repeat(4,minmax(0,1fr));width:100%;gap:clamp(12px,1.4vw,20px)}
+.mb-grid.g4 .mb-zi{width:22px;height:22px}.mb-grid.g4 .mb-zi svg{width:12px;height:12px}
+/* Art Direction with lines + a rounded square fading between images (story.fade)
+   laptop: the image beside all the text · phone: the text on top, then the colour lines with a small image beside them */
+.mb-story.fade{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"p f" "l f";column-gap:clamp(28px,3.6vw,56px);row-gap:0;align-items:center}
+.mb-story.fade .ad-p{grid-area:p;align-self:end;margin:0;font-size:15px;line-height:1.75;color:rgba(255,255,255,.88)}
+.mb-lines{grid-area:l;align-self:start;list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px}
+.mb-lines li{font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.85)}
+.mb-lines b{font-weight:700}
+.mb-fade{grid-area:f;position:relative;width:clamp(220px,22vw,300px);aspect-ratio:1;border-radius:22px;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.5)}
+.mb-fade img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .45s ease}
+.mb-fade img.on{opacity:1}
+@media (max-width:760px){
+  /* phone: the small image at the start side (right in Arabic, left in English), the colour lines right beside it */
+  .mb-story.fade{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"p p" "f l";column-gap:14px}
+  .mb-story.fade .ad-p{font-size:13px;line-height:1.85}
+  .mb-lines{margin-top:12px;gap:3px}
+  .mb-lines li{font-size:12px;line-height:1.55}
+  .mb-fade{width:96px;border-radius:14px;margin-top:12px;align-self:center;box-shadow:0 10px 24px rgba(0,0,0,.45)}
+}
+
+/* ---- options used by برمجان المنورة (other projects never use them) ---- */
+.mb-slide{aspect-ratio:var(--ar,9 / 16)}
+.mb-lightbox [hidden]{display:none!important}
+.mb-lightbox video{max-width:min(92vw,520px);max-height:calc(100dvh - 150px);width:auto;height:auto;border-radius:14px;background:#000;
+  box-shadow:0 0 0 1.5px rgba(70,240,130,.7),0 0 40px rgba(50,220,110,.35),0 30px 60px rgba(0,0,0,.6)}
+.mb-leaf.far{display:none}
+/* the website on a phone */
+.mb-phone{display:flex;justify-content:center}
+.mb-phone-f{position:relative;width:clamp(210px,19vw,270px);aspect-ratio:var(--ar);padding:9px;border-radius:40px;
+  background:linear-gradient(160deg,#2a2d36,#0c0d12 45%,#1b1d24);box-shadow:0 0 0 1px rgba(255,255,255,.14),0 0 46px rgba(52,226,122,.16),0 36px 70px rgba(0,0,0,.6);box-sizing:content-box}
+.mb-phone-f video{display:block;width:100%;height:100%;object-fit:cover;border-radius:31px;background:#05070d}
+.mb-phone-n{position:absolute;top:15px;left:50%;width:24%;height:15px;translate:-50% 0;border-radius:99px;background:#000}
+/* rounder header logo */
+.mb-head.lg-round .mb-logo img{border-radius:18%}
+/* the website on a wide laptop screen (the recording is zoomed to fill it) */
+.mb-laptop{width:100%;max-width:860px;margin:0 auto}
+.mb-lap-scr{position:relative;aspect-ratio:16 / 10;padding:12px;border-radius:18px 18px 6px 6px;background:linear-gradient(160deg,#2a2d36,#0c0d12 45%,#1b1d24);
+  box-shadow:0 0 0 1px rgba(255,255,255,.14),0 0 50px rgba(52,226,122,.14),0 30px 60px rgba(0,0,0,.55)}
+.mb-lap-scr video{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 0;border-radius:6px;background:#05070d}
+.mb-lap-base{display:block;width:114%;height:14px;margin:0 -7%;border-radius:2px 2px 14px 14px;background:linear-gradient(#3a3d47,#15161b);box-shadow:0 18px 30px rgba(0,0,0,.5)}
+.mb-lap-base::before{content:"";display:block;width:14%;height:5px;margin:0 auto;border-radius:0 0 8px 8px;background:#0c0d12}
+/* art direction with the official video (start side) */
+.mb-story.vid{grid-template-columns:auto minmax(0,1fr)}
+/* the official video in a glowing green frame */
+.mb-feat{position:relative;flex:none;width:clamp(200px,17vw,240px);aspect-ratio:var(--ar);margin:0;border-radius:18px;cursor:pointer;
+  box-shadow:0 0 0 1.5px #3BEA7E,0 0 22px rgba(59,234,126,.55),0 0 60px rgba(59,234,126,.22),0 30px 60px rgba(0,0,0,.55)}
+.mb-feat video{display:block;width:100%;height:100%;object-fit:cover;border-radius:18px;background:#05070d}
+.mb-play{position:absolute;inset:auto 12px 12px auto;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:rgba(5,20,12,.6);
+  box-shadow:0 0 0 1px rgba(125,255,176,.6)}
+html[dir="rtl"] .mb-play{inset:auto auto 12px 12px}
+.mb-play svg{width:15px;height:15px;fill:#fff;translate:1px 0}
+/* the campaign: text beside the carousel (3 lines) */
+.mb-camp{display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;gap:clamp(16px,2vw,26px)}
+.mb-camp-t{margin:0;font-size:17px;line-height:1.75;color:rgba(255,255,255,.88);text-align:center;white-space:nowrap}
+.mb-camp>.mb-car{width:100%}
+html[dir="rtl"] .mb-camp-t{line-height:2}
+/* the participant guide: much less room around the book */
+.mb-bookwrap.tight .mb-book-ctrl{margin-top:14px}
+.mb-bookwrap.tight .mb-bk-hint{margin-top:6px}
+.mb-bookwrap.land .mb-book{width:100%;max-width:1000px}
+@media (max-width:760px){
+  .mb-phone-f{width:52vw;border-radius:34px;padding:7px}
+  .mb-phone-f video{border-radius:27px}
+  .mb-phone-n{top:12px;height:12px}
+  .mb-story.vid{grid-template-columns:1fr;justify-items:center}
+  .mb-story.vid .mb-feat{order:2;width:50vw}
+  .mb-camp{grid-template-columns:1fr;gap:14px}
+  .mb-camp-t,html[dir="rtl"] .mb-camp-t{font-size:min(14px,3.6vw);text-align:center;max-width:27em;margin:0 auto;white-space:normal}
+  .mb-bookwrap.tight.mb-bw-top{padding-top:4px}
+  .mb-bookwrap.tight.mb-bw-top .mb-book-ctrl{margin-top:22px}
+}
+@media (prefers-reduced-motion:reduce){.mb-feat{animation:none}}
+/* round 3 (برمجان المنورة): art direction text in 3 lines + scope on 2 lines beside a bigger video; smaller laptop screen; lighter carousel on phones */
+.mb-story.vid .mb-feat{width:clamp(230px,21vw,300px)}
+.mb-story.vid .mb-story-t p{max-width:44ch}
+.mb-story.vid .mb-scope ul{flex-wrap:wrap;max-width:330px}
+.mb-laptop{max-width:640px}
+@media (max-width:760px){
+  .mb-story.vid{grid-template-columns:minmax(0,1fr)}
+  .mb-story.vid .mb-story-t{width:100%;max-width:30em;text-align:center}
+  .mb-story.vid .mb-story-t p{max-width:none}
+  .mb-story.vid .mb-scope ul{justify-content:center;max-width:none}
+  .mb-story.vid .mb-scope li,html[dir="rtl"] .mb-story.vid .mb-scope li{font-size:11px;padding:5px 10px}
+  .mb-car.lite .mb-slide{filter:none!important;will-change:transform,opacity}
+  .mb-car.lite .mb-slide:not([data-pos="0"]) img{box-shadow:none}
+}
+
+/* campaign row (Bombo's Books, grid row:true): laptop = all designs in one row across the full width · phone = 2 x 2;
+   the others very see-through, the framed one grows and is fully clear; the frame takes its colour from part.frame */
+.mb-grid.g-row{grid-template-columns:repeat(var(--n,4),minmax(0,1fr));width:100%;gap:clamp(14px,1.8vw,26px);padding:clamp(10px,1.2vw,16px) 0}
+.mb-grid.g-row .mb-gc{opacity:.28;transform:scale(.94)}
+.mb-grid.g-row .mb-gc.on{opacity:1;transform:scale(1.08);box-shadow:0 0 0 3px var(--gf,#27F6C5),0 0 26px color-mix(in srgb,var(--gf,#27F6C5) 45%,transparent),0 18px 40px rgba(0,0,0,.55)}
+.mb-grid.g-row .mb-zi{background:none;backdrop-filter:none;-webkit-backdrop-filter:none;width:24px;height:24px}
+.mb-grid.g-row .mb-zi svg{width:15px;height:15px;stroke-width:2;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+@media (hover:hover){.mb-grid.g-row .mb-gc:hover{opacity:.6}.mb-grid.g-row .mb-gc.on:hover{opacity:1}}
+@media (max-width:760px){
+  .mb-grid.g-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:min(100%,360px);padding:8px}
+  .mb-grid.g-row .mb-zi{width:20px;height:20px}.mb-grid.g-row .mb-zi svg{width:13px;height:13px}
+}
+/* story.small (Bombo's Books): a smaller square picture beside the text · phone: the text first, the picture under it */
+.mb-story.sm{grid-template-columns:auto minmax(0,1fr)}
+.mb-story.sm figure{width:clamp(230px,22vw,300px)}
+.mb-story.sm figure img{width:100%;height:auto;border-radius:18px}
+@media (max-width:760px){
+  .mb-story.sm{grid-template-columns:1fr;justify-items:center}
+  .mb-story.sm figure{order:2;width:min(70%,260px)}
+  .mb-story.sm .mb-story-t{justify-self:stretch}
+  /* five colour rectangles stay inside the screen */
+  .mb-colors.rect:has(li:nth-child(5)) .sw{width:clamp(46px,13.5vw,58px)}
+  .mb-colors.rect:has(li:nth-child(5)){gap:8px}
+}
+/* Bombo's Books options ------------------------------------------------------------
+   board.descAt:'title' = Arabic laptop: the intro starts where the title starts (not at the logo's edge)
+   board.oneLine:'ar'   = Arabic phone: the name stays on one line, the tagline close under it
+   item zi:true         = tap to enlarge, with the small white zoom sign of the social grid (not the round button) */
+@media (min-width:761px){html[dir="rtl"] .mb-head.h-compact.d-title .bi-case-desc{grid-column:2}}
+@media (max-width:760px){
+  html[dir="rtl"] .mb-head.one-ar .bi-case-name{white-space:nowrap;line-height:1.08}
+  html[dir="rtl"] .mb-head.one-ar .mb-tag{margin-top:0}
+}
+.mb-pc.zi{cursor:zoom-in}
+.mb-pc.zi .mb-zi{width:24px;height:24px;inset-inline-end:4%;bottom:4%}
+.mb-pc.zi .mb-zi svg{width:13px;height:13px}
+@media (max-width:760px){.mb-pc.zi .mb-zi{width:21px;height:21px}.mb-pc.zi .mb-zi svg{width:11px;height:11px}}
+/* KHALAIG: campaign text stays one line on the phone too (campaign one:true) */
+@media (max-width:760px){
+  .mb-camp.one .mb-camp-t,html[dir="rtl"] .mb-camp.one .mb-camp-t{white-space:nowrap;max-width:none;font-size:min(13px,3.25vw)}
+}
+@media (min-width:761px){.mb-head.d2 .bi-case-desc{max-width:min(100%,600px)}}
+/* six colours: a little smaller on the phone so they stay inside the screen */
+@media (max-width:760px){
+  .mb-colors.rect:has(li:nth-child(6)) .sw{width:clamp(38px,11.2vw,50px)}
+  .mb-colors.rect:has(li:nth-child(6)){gap:6px}
+}
+/* KHALAIG (board.capBig): Arabic laptop = bigger section titles */
+@media (min-width:761px){html[dir="rtl"] .mb-parts.cap-big .mb-sec-t{font-size:28px;line-height:1.35}}

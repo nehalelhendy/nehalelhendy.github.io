@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1F012A">
+  <meta name="description" content="Interactive Experiences by Nehal El Hendy — case studies in interactive and digital design.">
+  <title>Interactive Experiences — Nehal El Hendy</title>
+  <script>/* language comes from the main site (?lang=ar) so the page opens in the visitor's language */
+    (function(){var l='en';try{l=new URLSearchParams(location.search).get('lang')||sessionStorage.getItem('nehLang')||'en';}catch(e){}
+      if(l==='ar'){document.documentElement.lang='ar';document.documentElement.dir='rtl';}document.documentElement.classList.add('ie-js');})();</script>
+  <link rel="preload" href="../hb/f/museomoderno-900.woff" as="font" type="font/woff" crossorigin>
+  <style>/* fonts: declared here, relative to the page (the same way as the main site) */
+  @font-face{font-family:'MuseoModerno';src:url(../hb/f/museomoderno-800.woff) format('woff');font-weight:800;font-display:swap}
+  @font-face{font-family:'MuseoModerno';src:url(../hb/f/museomoderno-900.woff) format('woff');font-weight:900;font-display:swap}
+  @font-face{font-family:'Feeling Passionate';src:url(../hb/f/feeling-passionate.woff) format('woff');font-display:swap}
+  @font-face{font-family:'VAG Rounded Next';src:url(../hb/f/vag-rounded-next-600.woff) format('woff');font-weight:600;font-display:swap}
+  @font-face{font-family:'Mohawla';src:url(../hb/f/mohawla.woff) format('woff');font-display:swap}
+  @font-face{font-family:'Lemon Brush Arabic';src:url(../hb/f/lemon-brush-arabic.woff) format('woff');font-display:swap}
+  @font-face{font-family:'Montserrat Arabic';src:url(../hb/f/montserrat-arabic-400.woff) format('woff');font-display:swap}
+  </style>
+  <link rel="stylesheet" href="../site-nav.css">
+  <link rel="stylesheet" href="styles/ie.css">
+  <link rel="stylesheet" href="styles/hero.css">
+  <link rel="stylesheet" href="styles/work.css">
+  <link rel="stylesheet" href="styles/case-study.css">
+  <link rel="stylesheet" href="styles/quiz.css">
+  <!-- order matters: the stage (shared anchor) → the sphere → the sequence that drives them → the page shell -->
+  <script defer src="components/hero-stage.js"></script>
+  <script defer src="components/energy-sphere.js"></script>
+  <script defer src="components/bg-waves.js"></script>
+  <script defer src="animations/hero-sequence.js"></script>
+  <script defer src="components/waves-field.js"></script>
+  <script defer src="animations/work-reveal.js"></script>
+  <script defer src="cases.js"></script>
+  <script defer src="components/case-study.js"></script>
+  <script defer src="quiz-data.js"></script>
+  <script defer src="components/quiz.js"></script>
+  <script defer src="ie.js"></script>
+  <script defer src="../site-nav.js" data-page="inter" data-base="../"></script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FFA835'/%3E%3Cstop offset='.5' stop-color='%23FF2A6F'/%3E%3Cstop offset='1' stop-color='%23CA12C2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Arial Rounded MT Bold,Trebuchet MS,Arial,sans-serif' font-weight='900' font-size='40' fill='%23fff'%3EN%3C/text%3E%3C/svg%3E">
+</head>
+<body id="top">
+  <header class="ie-top">
+    <button type="button" class="lang-blob" id="langBlob" data-to="ar" aria-label="Switch to Arabic">AR</button>
+    <a class="ie-logo" href="../index.html" aria-label="Home"><img src="../logo.webp" alt="nehal elhendy Portfolio" width="640" height="253"></a>
+  </header>
+
+  <main id="ieMain">
+    <!-- HERO — one cinematic sequence, the same on every screen size:
+         empty mauve → hand (from the left) + screen (from the right) → touch + flash at the exact centre
+         → both retreat → the light point grows into the energy sphere → the titles appear over it.
+         Every position is computed from ONE shared anchor (the hero's centre) by components/hero-stage.js -->
+    <section class="ie-hero" id="ieHero" aria-labelledby="ieTitle">
+      <div class="ie-bg" aria-hidden="true"><i></i></div>                <!-- PHASE 02: deep mauve + slow soft light -->
+      <div class="ie-stage" id="ieStage" aria-hidden="true">              <!-- overflow hidden: the wrist never shows -->
+        <canvas class="ie-waves" id="ieWaves"></canvas>                   <!-- floating light strands, very transparent -->
+        <canvas class="ie-sphere" id="ieSphere"></canvas>                 <!-- PHASE 03/04: energy sphere (Canvas 2D) -->
+        <img class="ie-hand" id="ieHand" src="assets/hand.webp" alt="" width="1995" height="788" decoding="async">
+        <img class="ie-screen" id="ieScreen" src="assets/screen.webp" alt="" width="1536" height="1024" decoding="async">
+        <i class="ie-flash" id="ieFlash"></i>                             <!-- the touch flash, on the anchor -->
+      </div>
+      <div class="ie-hero-text">                                          <!-- HTML text, above the sphere; the main title sits on the anchor -->
+        <div class="ie-titles">
+          <p class="ie-label" id="ieLabel" data-en="Beyond the Screen" data-ar="التصميم التفاعلي">Beyond the Screen</p>
+          <h1 class="ie-title" id="ieTitle" dir="ltr" lang="en"><span class="ie-l1" data-en="Interactive" data-ar="Interactive">Interactive</span> <span class="ie-l2" data-en="Design" data-ar="Design">Design</span></h1>
+          <p class="ie-intro" id="ieIntro" data-en="Transforming ideas into immersive digital experiences through interactive storytelling, creative exploration, and engaging visual journeys that invite people to participate, discover, and connect." data-ar="تُحوَّل الأفكار إلى تجارب رقمية غامرة، عبر سردٍ قصصي تفاعلي واستكشافٍ إبداعي ورحلاتٍ بصرية جذّابة تدعو الناس إلى المشاركة والاكتشاف والتواصل.">Transforming ideas into immersive digital experiences through interactive storytelling, creative exploration, and engaging visual journeys that invite people to participate, discover, and connect.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECTED EXPERIENCES — three case studies side by side (stacked on phones), then the quiz card full width.
+         Same world as the hero: deep mauve, slow light, wavy light lines (components/waves-field.js). -->
+    <section class="ie-work" id="ieWork" aria-labelledby="ieWorkTitle">
+      <div class="ie-work-fade" aria-hidden="true"></div>
+      <div class="ie-work-bg" aria-hidden="true"><i></i><b></b></div>
+      <canvas class="ie-work-waves" id="ieWorkWaves" aria-hidden="true"></canvas>
+      <div class="ie-wrap">
+        <header class="ie-work-head ie-on-item">
+          <span class="ie-bar" aria-hidden="true"></span>
+          <h2 class="ie-work-title" id="ieWorkTitle"><span data-en="Selected" data-ar="تجارب">Selected</span> <span class="ie-grad" data-en="Experiences" data-ar="مختارة">Experiences</span></h2>
+          <p class="ie-work-sub" data-en="A selection of interactive projects that turn ideas into engaging, immersive digital worlds." data-ar="مجموعة مختارة من المشاريع التفاعلية التي تحوّل الأفكار إلى عوالم رقمية جذّابة وغامرة.">A selection of interactive projects that turn ideas into engaging, immersive digital worlds.</p>
+        </header>
+        <ul class="ie-cases">
+          <li class="ie-on-item"><a class="ie-case" href="#rooted-in-heritage" data-case="rooted-in-heritage">
+            <span class="ie-case-bg" aria-hidden="true"></span>
+            <span class="ie-case-media"><img src="assets/cases/rooted-in-heritage/card.webp" alt="The interactive map of the hackathon, inspired by Al Baha" width="1600" height="1050" loading="lazy" decoding="async"><video class="ie-case-vid" muted loop playsinline preload="none" data-src="assets/cases/rooted-in-heritage/board.mp4" aria-hidden="true"></video></span>
+            <span class="ie-case-body">
+              <span class="ie-case-text">
+                <span class="ie-case-name" role="heading" aria-level="3" data-en="Rooted in Heritage" data-ar="متجذّرة في التراث">Rooted in Heritage</span>
+                <span class="ie-case-desc" data-en="An interactive map designed as an integrated learning environment for participants throughout the hackathon." data-ar="خريطة تفاعلية صُممت لتكون بيئة تدريبية متكاملة للمشاركين طوال الهاكاثون.">An interactive map designed as an integrated learning environment for participants throughout the hackathon.</span>
+              </span>
+              <span class="ie-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </span>
+          </a></li>
+          <li class="ie-on-item"><a class="ie-case" href="#future-in-motion" data-case="future-in-motion">
+            <span class="ie-case-bg" aria-hidden="true"></span>
+            <span class="ie-case-media"><img src="assets/cases/future-in-motion/card.webp" alt="The interactive city of the Social Development Bank hackathon with Tanmon" width="1600" height="1050" loading="lazy" decoding="async"><video class="ie-case-vid" muted loop playsinline autoplay preload="auto" data-loop src="assets/cases/future-in-motion/cover.mp4" data-src-sm="assets/cases/future-in-motion/cover-sm.mp4" poster="assets/cases/future-in-motion/card.webp" aria-hidden="true"></video></span>
+            <span class="ie-case-body">
+              <span class="ie-case-text">
+                <span class="ie-case-name" role="heading" aria-level="3" data-en="Future in Motion" data-ar="مستقبل يتحرك">Future in Motion</span>
+                <span class="ie-case-desc" data-en="An immersive digital experience designed to inspire innovative ideas and solutions that create positive social impact." data-ar="تجربة رقمية تفاعلية تهدف إلى إلهام المشاركين لتطوير أفكار وحلول مبتكرة تُحدث تأثيرًا إيجابيًا في المجتمع.">An immersive digital experience designed to inspire innovative ideas and solutions that create positive social impact.</span>
+              </span>
+              <span class="ie-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </span>
+          </a></li>
+          <li class="ie-on-item"><a class="ie-case" href="#magic-of-munawara" data-case="magic-of-munawara">
+            <span class="ie-case-bg" aria-hidden="true"></span>
+            <span class="ie-case-media"><img src="assets/cases/magic-of-munawara/cover-poster.webp" alt="The board of the Madinah hackathon city" width="964" height="632" loading="lazy" decoding="async"><video class="ie-case-vid" muted loop playsinline preload="none" data-src="assets/cases/magic-of-munawara/cover.mp4" aria-hidden="true"></video></span>
+            <span class="ie-case-body">
+              <span class="ie-case-text">
+                <span class="ie-case-name" role="heading" aria-level="3" data-en="The Magic of Munawara" data-ar="سحر المدينة المنورة">The Magic of Munawara</span>
+                <span class="ie-case-desc" data-en="A digital city inspired by Madinah, guiding every team from first idea to final prototype." data-ar="مدينة رقمية مستوحاة من المدينة المنورة، ترافق كل فريق من الفكرة الأولى حتى النموذج النهائي.">A digital city inspired by Madinah, guiding every team from first idea to final prototype.</span>
+              </span>
+              <span class="ie-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </span>
+          </a></li>
+        </ul>
+        <div class="ie-quiz ie-on-item" id="ieQuiz">
+          <div class="ie-quiz-cave" aria-hidden="true"><div class="ie-quiz-cave-in"><img class="ie-cave-l" src="assets/quiz/card-cave.webp" alt="" width="760" height="787" loading="lazy" draggable="false"><img class="ie-cave-m" src="assets/quiz/card-cave-m.webp" alt="" width="800" height="787" loading="lazy" draggable="false"><i></i><i></i></div></div>
+          <div class="ie-quiz-text">
+            <h3 class="ie-quiz-title"><span data-en="Quick" data-ar="اختبار">Quick</span> <span class="ie-grad" data-en="Quiz" data-ar="سريع">Quiz</span></h3>
+            <p class="ie-quiz-desc" data-en="Not sure what kind of interactive experience you need? Take a short quiz to discover what fits your goals best." data-ar="لست متأكدًا من نوع التجربة التفاعلية التي تحتاجها؟ أجب عن اختبار قصير لتكتشف ما يناسب أهدافك.">Not sure what kind of interactive experience you need? Take a short quiz to discover what fits your goals best.</p>
+            <a class="ie-btn" href="#quiz"><span data-en="Take the Quiz" data-ar="ابدأ الاختبار">Take the Quiz</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CASE STUDY POP-UP — filled from cases.js by components/case-study.js (opens from a card, closes with ×, Esc or the browser's back) -->
+  <div class="cs" id="csPop" hidden role="dialog" aria-modal="true" aria-labelledby="csTitle">
+    <div class="cs-veil" aria-hidden="true"></div>
+    <div class="cs-pop">
+      <div class="cs-blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+      <span class="cs-frame" aria-hidden="true"></span>
+      <button type="button" class="cs-close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <div class="cs-scroll"><div class="cs-inner"></div></div>
+    </div>
+  </div>
+
+  <!-- QUIZ — the board game, built from quiz-data.js by components/quiz.js (opens from "Take the Quiz"; closes with ×, Esc or the browser's back) -->
+  <div class="qz" id="qzPop" hidden role="dialog" aria-modal="true"></div>
+
+  <footer class="ie-foot" id="contact">
+    <a class="ie-logo" href="../index.html" aria-label="Home"><img src="../logo.webp" alt="nehal elhendy Portfolio" width="640" height="253" loading="lazy"></a>
+    <a class="ie-home" id="ieHome" href="../index.html#services"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4H6.5A1.5 1.5 0 0 0 5 5.5v13A1.5 1.5 0 0 0 6.5 20H13"/><path d="M10 12h10M16.5 8.5 20 12l-3.5 3.5"/></svg><span data-en="Back to the main page" data-ar="العودة إلى الصفحة الرئيسية">Back to the main page</span></a>
+  </footer>
+</body>
+</html>

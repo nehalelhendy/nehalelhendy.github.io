@@ -1,0 +1,78 @@
+/* =====================================================================
+   SITE MENU — shared by every page (home, Brand Identities, future pages)
+   Icon: three white lines (no circle), top right.
+   It opens a side pop-up panel (not a new page): dark mauve glass,
+   main headings yellow, sub headings white and smaller.
+   ===================================================================== */
+.nav-btn{position:fixed;z-index:1100;top:calc(18px + env(safe-area-inset-top,0px));right:calc(18px + env(safe-area-inset-right,0px));
+  width:48px;height:48px;border:0;padding:0;margin:0;cursor:pointer;color:#fff;background:none;-webkit-tap-highlight-color:transparent;
+  filter:drop-shadow(0 1px 4px rgba(40,0,50,.45));transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.nav-btn:hover{transform:scale(1.08)}
+.nav-btn:focus-visible{outline:2px solid #27F6C5;outline-offset:2px;border-radius:8px}
+.nav-btn i{position:absolute;left:10px;right:10px;top:50%;height:2.6px;margin-top:-1.3px;border-radius:2px;background:currentColor;
+  transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .25s}
+.nav-btn i:nth-child(1){transform:translateY(-9px)}
+.nav-btn i:nth-child(3){transform:translateY(9px)}
+.nav-open .nav-btn i:nth-child(1){transform:rotate(45deg)}
+.nav-open .nav-btn i:nth-child(2){opacity:0;transform:scaleX(.2)}
+.nav-open .nav-btn i:nth-child(3){transform:rotate(-45deg)}
+
+/* dim layer behind the panel: a tap on it closes the menu */
+.nav-scrim{position:fixed;inset:0;z-index:1080;background:rgba(20,2,26,.42);opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s .45s}
+.nav-open .nav-scrim{opacity:1;visibility:visible;transition:opacity .45s ease}
+
+/* the side panel: dark mauve glass */
+.nav-panel{position:fixed;z-index:1090;top:0;right:0;bottom:0;width:min(380px,86vw);overflow-y:auto;overscroll-behavior:contain;color:#fff;
+  background:linear-gradient(160deg,rgba(92,36,110,.62) 0%,rgba(52,12,66,.72) 55%,rgba(30,4,40,.8) 100%);
+  -webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);
+  border-left:1px solid rgba(255,255,255,.16);box-shadow:-18px 0 50px rgba(20,0,30,.45),inset 1px 0 0 rgba(255,255,255,.08);
+  /* slides in from the right edge; clip-path (not a translate) so the closed panel never widens the page */
+  clip-path:inset(0 0 0 100%);visibility:hidden;transition:clip-path .55s cubic-bezier(.65,0,.25,1),visibility 0s .55s}
+.nav-open .nav-panel{clip-path:inset(0 0 0 0);visibility:visible;transition:clip-path .6s cubic-bezier(.2,.8,.2,1)}
+.nav-panel::before{content:"";position:absolute;left:-40%;top:-10%;width:120%;height:45%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(202,18,194,.22),transparent)}
+
+.nav-list{position:relative;list-style:none;margin:0;padding:96px 34px 48px}
+.nav-list>li{opacity:0;transform:translateX(24px);transition:opacity .45s,transform .55s cubic-bezier(.2,.8,.2,1)}
+.nav-open .nav-list>li{opacity:1;transform:none}
+.nav-open .nav-list>li:nth-child(1){transition-delay:.18s}.nav-open .nav-list>li:nth-child(2){transition-delay:.26s}.nav-open .nav-list>li:nth-child(3){transition-delay:.34s}
+/* main headings: yellow */
+.nav-top{display:inline-block;padding:10px 0;color:#FFE13D;text-decoration:none;font:900 30px/1.15 "MuseoModerno",sans-serif;
+  text-shadow:0 0 18px rgba(255,225,61,.25);transition:color .25s,transform .3s}
+.nav-top:hover,.nav-top:focus-visible{color:#fff;transform:translateX(5px);outline:none}
+/* sub headings: white, smaller */
+.nav-sub{list-style:none;margin:2px 0 16px;padding:0}
+.nav-sub a,.nav-sub span.nav-soon{display:flex;align-items:center;gap:10px;padding:8px 0;color:#fff;text-decoration:none;
+  font:600 15px/1.4 "VAG Rounded Next","Arial Rounded MT Bold",system-ui,sans-serif;transition:opacity .25s,transform .3s}
+.nav-sub a::before,.nav-sub span.nav-soon::before{content:"";flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:#fff;opacity:.7}
+.nav-sub a:hover,.nav-sub a:focus-visible{transform:translateX(5px);outline:none;opacity:.85}
+.nav-sub a[aria-current="page"]::before{background:#FFE13D;opacity:1;box-shadow:0 0 8px rgba(255,225,61,.8)}
+.nav-sub span.nav-soon{opacity:.6;cursor:default}
+.nav-soon em{font-style:normal;font-size:10.5px;letter-spacing:.06em;padding:2px 8px;border-radius:99px;background:rgba(255,225,61,.18);color:#FFE13D}
+html[dir="rtl"] .nav-top{font:400 32px/1.4 "Mohawla",sans-serif}
+html[dir="rtl"] .nav-sub a,html[dir="rtl"] .nav-sub span.nav-soon{font-family:"Montserrat Arabic",system-ui,sans-serif;font-weight:400;font-size:14.5px}
+html[dir="rtl"] .nav-list{direction:rtl}
+html[dir="rtl"] .nav-top:hover,html[dir="rtl"] .nav-sub a:hover{transform:translateX(-5px)}
+html[dir="rtl"] .nav-list>li{transform:translateX(-24px)}
+html[dir="rtl"].nav-open .nav-list>li{transform:none}
+html.nav-open,html.nav-open body{overflow:hidden}
+@media (max-width:640px){
+  .nav-btn{top:calc(12px + env(safe-area-inset-top,0px));right:calc(10px + env(safe-area-inset-right,0px));width:44px;height:44px}
+  .nav-btn i{left:10px;right:10px;height:2.4px}
+  .nav-btn i:nth-child(1){transform:translateY(-8px)}.nav-btn i:nth-child(3){transform:translateY(8px)}
+  .nav-list{padding:84px 26px 40px}
+  .nav-top{font-size:26px}html[dir="rtl"] .nav-top{font-size:28px}
+  .nav-sub a,.nav-sub span.nav-soon{font-size:14px}
+}
+/* language switch on every page: just the letters (no blob), beside the menu icon, on its left.
+   Stronger selector on purpose: it replaces the old liquid blob of the hero and of the sub pages. */
+html .lang-blob.lang-blob{position:fixed;z-index:1100;left:auto;right:calc(70px + env(safe-area-inset-right,0px));top:calc(18px + env(safe-area-inset-top,0px));
+  width:auto;min-width:44px;height:48px;padding:0 6px;margin:0;border:0;border-radius:6px;background:none;box-shadow:none;animation:none;scale:none;
+  color:#fff;font:900 17px/48px "MuseoModerno",sans-serif;letter-spacing:.04em;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  text-shadow:0 1px 6px rgba(40,0,50,.45);transition:color .25s,transform .3s cubic-bezier(.2,.8,.2,1)}
+html .lang-blob.lang-blob:hover{color:#FFE13D;transform:translateY(-1px);scale:none}
+html .lang-blob.lang-blob:focus-visible{outline:2px solid #27F6C5;outline-offset:2px}
+@media (max-width:640px){
+  html .lang-blob.lang-blob{right:calc(56px + env(safe-area-inset-right,0px));top:calc(12px + env(safe-area-inset-top,0px));height:44px;line-height:44px;font-size:15px;min-width:38px;width:auto;box-shadow:none}
+}
+@media (prefers-reduced-motion:reduce){.nav-panel,.nav-scrim,.nav-list>li,.nav-btn i{transition:none!important}}

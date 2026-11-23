@@ -1,0 +1,100 @@
+/* =====================================================================
+   HERO — Interactive Experiences
+   .ie-stage clips everything (overflow:hidden) so the cut wrist of the hand
+   never shows. Hand, screen, flash and sphere are positioned in px by JS
+   (components/hero-stage.js) around the hero's exact centre.
+   ===================================================================== */
+.ie-hero{position:relative;height:100vh;height:100svh;min-height:520px;overflow:hidden;isolation:isolate}
+@media (max-width:760px) and (orientation:portrait){.ie-hero{height:80vh;height:80svh;min-height:540px}}   /* mobile: composition higher, content continues below */
+/* ---------- PHASE 02 — background: deep dark mauve, soft light that breathes and drifts very slowly ----------
+   Colours sampled from Nehal's reference (#260233 centre → #1D0127 edges). Only radial gradients moved with
+   transform/opacity (GPU, cheap on Android): no blur filter, no mask-image, no shapes, particles or lines. */
+.ie-bg{position:absolute;inset:0;z-index:0;overflow:hidden;
+  background:radial-gradient(75% 70% at 50% 48%,#2C0439 0,#260233 38%,#1F012A 72%,#180121 100%)}
+.ie-bg::before,.ie-bg::after,.ie-bg i{content:"";position:absolute;left:50%;top:50%;width:130vmax;height:130vmax;margin:-65vmax 0 0 -65vmax;pointer-events:none;will-change:transform,opacity}
+/* a wide, very soft glow that wanders around the centre */
+.ie-bg::before{background:radial-gradient(circle at 50% 50%,rgba(92,26,120,.42) 0,rgba(70,16,94,.20) 18%,rgba(60,10,80,0) 38%);
+  animation:ieDriftA 46s ease-in-out infinite alternate,ieBreathe 13s ease-in-out infinite alternate}
+/* a second, slightly warmer pool (towards magenta) on the other side */
+.ie-bg::after{background:radial-gradient(circle at 50% 50%,rgba(110,22,120,.30) 0,rgba(80,14,96,.12) 15%,rgba(60,10,80,0) 30%);
+  animation:ieDriftB 58s ease-in-out infinite alternate,ieBreathe 17s ease-in-out -6s infinite alternate}
+/* a faint cool pool (towards violet) that crosses slowly */
+.ie-bg i{background:radial-gradient(circle at 50% 50%,rgba(72,24,128,.26) 0,rgba(58,14,100,.10) 13%,rgba(50,10,80,0) 27%);
+  animation:ieDriftC 71s ease-in-out infinite alternate,ieBreathe 21s ease-in-out -11s infinite alternate}
+@keyframes ieDriftA{0%{transform:translate3d(-6%,-4%,0) scale(1)}50%{transform:translate3d(5%,3%,0) scale(1.12)}100%{transform:translate3d(-2%,6%,0) scale(.96)}}
+@keyframes ieDriftB{0%{transform:translate3d(16%,-12%,0) scale(1.05)}50%{transform:translate3d(6%,10%,0) scale(.92)}100%{transform:translate3d(20%,4%,0) scale(1.1)}}
+@keyframes ieDriftC{0%{transform:translate3d(-18%,14%,0) scale(.95)}50%{transform:translate3d(-8%,-8%,0) scale(1.1)}100%{transform:translate3d(-20%,-2%,0) scale(1)}}
+@keyframes ieBreathe{0%{opacity:.55}100%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.ie-bg::before,.ie-bg::after,.ie-bg i{animation:none}}
+.ie-stage{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}   /* clips the cut wrist */
+.ie-hand,.ie-screen{position:absolute;left:0;top:0;max-width:none;height:auto;opacity:0;will-change:transform}
+.ie-screen{z-index:2}
+.ie-hand{z-index:3}
+
+/* ---------- background waves (behind everything in the stage; fade in when the sphere settles) ---------- */
+.ie-waves{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:0;transition:opacity 2.4s ease}
+.ie-waves-on .ie-waves,.ie-reduced .ie-waves{opacity:1}
+
+/* ---------- the energy sphere: a square canvas centred on the anchor (size + place set by JS) ---------- */
+.ie-sphere{position:absolute;left:0;top:0;width:0;height:0;z-index:1;pointer-events:none;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+.ie-sphere.is-live{pointer-events:auto;cursor:grab}
+.ie-sphere.is-grabbing{cursor:grabbing}
+.ie-reduced .ie-sphere{animation:ieFade 1.4s ease both}
+@keyframes ieFade{from{opacity:0}to{opacity:1}}
+
+/* ---------- the touch flash: white core → violet glow, a thin light streak; only around the contact point ---------- */
+.ie-flash{position:absolute;left:0;top:0;z-index:4;border-radius:50%;opacity:0;transform:scale(.3);will-change:transform,opacity;pointer-events:none;
+  background:radial-gradient(circle,#fff 0,#fff 4%,rgba(255,240,255,.95) 7%,rgba(232,186,255,.75) 12%,rgba(186,96,255,.42) 22%,rgba(140,50,230,.16) 36%,rgba(110,30,200,0) 52%)}
+.ie-flash::after{content:"";position:absolute;left:4%;right:4%;top:48.8%;height:2.4%;border-radius:50%;
+  background:linear-gradient(90deg,rgba(200,140,255,0),rgba(220,180,255,.6) 36%,#fff 50%,rgba(220,180,255,.6) 64%,rgba(200,140,255,0))}
+
+/* ---------- titles (HTML text, above the sphere). The main title is centred on the anchor;
+   the handwritten line sits above it, the short intro below it, wide, just under the sphere (offset set by JS) ---------- */
+.ie-hero-text{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center;pointer-events:none;padding:0 18px}
+.ie-titles{position:relative}
+/* a very light, soft dark glow under the words, only so they read clearly on the bright sphere */
+.ie-titles::before{content:"";position:absolute;left:50%;top:50%;width:150%;height:150%;transform:translate(-50%,-50%);z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(22,0,32,.42),rgba(22,0,32,.22) 55%,rgba(22,0,32,0));opacity:0;transition:opacity 1.2s ease}
+.ie-show-title .ie-titles::before{opacity:1}
+.ie-label{position:absolute;left:50%;bottom:100%;transform:translate3d(-50%,14px,0);margin:0 0 .12em;white-space:nowrap;
+  font:400 clamp(30px,min(3.7vw,6vh),60px)/1.2 'Feeling Passionate',cursive;color:#27F6C5;
+  text-shadow:0 0 4px rgba(14,0,22,.8),0 0 12px rgba(14,0,22,.7),0 0 24px rgba(14,0,22,.5),0 0 16px rgba(39,246,197,.25);opacity:0;transition:opacity 1s ease,transform 1.2s cubic-bezier(.2,.7,.2,1)}
+/* a soft dark glow behind the handwritten line (both languages) */
+.ie-label::before{content:"";position:absolute;left:-12%;right:-12%;top:-8%;bottom:-8%;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(16,0,26,.6),rgba(16,0,26,.35) 55%,rgba(16,0,26,0))}
+.ie-title{margin:0;font:900 clamp(56px,min(9.2vw,14.5vh),160px)/.96 'MuseoModerno',var(--rounded);letter-spacing:-.01em;color:#fff;
+  filter:drop-shadow(0 0 3px rgba(12,0,20,.55)) drop-shadow(0 0 14px rgba(12,0,20,.55)) drop-shadow(0 0 22px rgba(140,30,200,.4))}
+.ie-title span{display:block;opacity:0;transform:translate3d(0,26px,0) scale(.97);color:#fff;
+  transition:opacity 1s ease,transform 1.3s cubic-bezier(.2,.7,.2,1)}
+.ie-title .ie-l2{font-size:1.95em;line-height:.92;transition-delay:.12s}   /* "Design" clearly bigger than "Interactive" */
+/* "Design" in the page gradient (fuchsia → magenta → mauve) */
+.ie-title .ie-l2{background:linear-gradient(105deg,rgba(255,255,255,0) 20%,rgba(255,255,255,.9) 50%,rgba(255,255,255,0) 80%) no-repeat,var(--ie-grad);
+  background-size:38% 100%,100% 100%;background-position:-120% 0,0 0;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding:0 .04em .08em}
+.ie-show-title .ie-title .ie-l2{animation:ieShine 5s ease-in-out 1.6s infinite}
+@keyframes ieShine{0%{background-position:-120% 0,0 0}32%,100%{background-position:220% 0,0 0}}
+@media (prefers-reduced-motion:reduce){.ie-show-title .ie-title .ie-l2{animation:none}}
+.ie-intro{position:absolute;left:50%;top:100%;width:min(56vw,880px);transform:translate3d(-50%,14px,0);margin:0;   /* wide: about two lines; margin-top set by JS (just under the sphere) */
+ 
+  font:600 clamp(13px,1.05vw,16px)/1.6 var(--rounded);color:#fff;text-shadow:0 1px 8px rgba(20,0,30,.6);
+  opacity:0;transition:opacity 1s ease .3s,transform 1.2s cubic-bezier(.2,.7,.2,1) .3s}
+.ie-show-label .ie-label{opacity:1;transform:translate3d(-50%,0,0)}
+.ie-show-title .ie-title span{opacity:1;transform:none}
+.ie-show-title .ie-intro{opacity:.92;transform:translate3d(-50%,0,0)}
+/* Arabic: Lemon Brush for the handwritten line, Mohawla for the title, Montserrat Arabic for the intro */
+html[dir="rtl"] .ie-label{font-family:'Lemon Brush Arabic',serif;font-size:clamp(24px,min(2.8vw,4.6vh),46px);line-height:1.5;
+  text-shadow:0 0 4px rgba(14,0,22,.95),0 0 12px rgba(14,0,22,.9),0 0 26px rgba(14,0,22,.75),0 0 16px rgba(39,246,197,.25)}
+/* Arabic: a soft dark glow behind the handwritten line so it reads over the sphere's light strands */
+html[dir="rtl"] .ie-label::before{content:"";position:absolute;left:-14%;right:-14%;top:-10%;bottom:-10%;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(16,0,26,.82),rgba(16,0,26,.55) 55%,rgba(16,0,26,0))}
+html[dir="rtl"] .ie-intro{font-family:'Montserrat Arabic',sans-serif;font-weight:400;line-height:1.8}
+@media (max-width:760px){
+  .ie-label{font-size:clamp(24px,8.4vw,36px)}
+  .ie-title{font-size:clamp(40px,13vw,64px)}
+  .ie-title .ie-l2{font-size:1.9em}
+  .ie-intro{font-size:12px;line-height:1.55;width:calc(100vw - 28px)}
+  html[dir="rtl"] .ie-label{font-size:clamp(21px,6.6vw,29px)}
+  html[dir="rtl"] .ie-intro{line-height:1.75}
+  html:not([dir="rtl"]) .ie-intro{width:min(80vw,320px);text-wrap:pretty}
+}
+@media (prefers-reduced-motion:reduce){.ie-label,.ie-title span,.ie-intro{transition:opacity 1.2s ease}}

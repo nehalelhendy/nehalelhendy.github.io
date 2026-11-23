@@ -1,0 +1,180 @@
+/* =====================================================================
+   SELECTED EXPERIENCES — the three case-study cards + the quiz card
+   (under the hero, same world: deep mauve, slow soft light, wavy light lines).
+   Laptop: the three cards side by side, the quiz card full width under them.
+   Phone / small tablet: everything stacked, the quiz card last.
+   No blur, no mask-image (smooth on Android); only transform / opacity animate.
+   ===================================================================== */
+.ie-work{position:relative;z-index:1;isolation:isolate;overflow:hidden;padding:clamp(70px,9vh,110px) 0 clamp(80px,10vh,120px)}
+
+/* ---------- background: continues the hero (same mauve, same drifting pools of light) ---------- */
+.ie-work-bg{position:absolute;inset:0;top:var(--ie-lift,0px);z-index:-2;overflow:hidden;background:#1F012A}
+/* phone: where the section rises over the hero's empty bottom, it fades in softly (no edge) */
+.ie-work-fade{position:absolute;left:0;right:0;top:0;height:var(--ie-lift,0px);z-index:-2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(28,1,38,0),rgba(28,1,38,.55) 55%,#1C0126)}
+.ie-work-bg::before,.ie-work-bg::after,.ie-work-bg i{content:"";position:absolute;width:120vmax;height:120vmax;pointer-events:none;will-change:transform,opacity}
+.ie-work-bg::before{left:-30vmax;top:-20vmax;background:radial-gradient(circle,rgba(92,26,120,.38) 0,rgba(70,16,94,.16) 20%,rgba(60,10,80,0) 40%);
+  animation:ieDriftA 46s ease-in-out infinite alternate,ieBreathe 13s ease-in-out infinite alternate}
+.ie-work-bg::after{right:-40vmax;top:20%;background:radial-gradient(circle,rgba(110,22,120,.30) 0,rgba(80,14,96,.12) 16%,rgba(60,10,80,0) 32%);
+  animation:ieDriftB 58s ease-in-out infinite alternate,ieBreathe 17s ease-in-out -6s infinite alternate}
+.ie-work-bg i{left:-20vmax;bottom:-50vmax;background:radial-gradient(circle,rgba(72,24,128,.26) 0,rgba(58,14,100,.10) 14%,rgba(50,10,80,0) 28%);
+  animation:ieDriftC 71s ease-in-out infinite alternate,ieBreathe 21s ease-in-out -11s infinite alternate}
+/* top band: picks up the exact colours of the hero's lower edge (darker sides, lighter centre) so there is no seam */
+.ie-work-bg b{position:absolute;left:0;right:0;top:0;height:300px;pointer-events:none;
+  background:radial-gradient(48% 260px at 50% 0,#1F002B 0,rgba(31,0,43,.6) 45%,rgba(31,0,43,0) 100%),linear-gradient(180deg,#190122 0,rgba(25,1,34,.55) 45%,rgba(25,1,34,0) 100%)}
+.ie-work-waves{position:absolute;inset:0;top:var(--ie-lift,0px);height:auto;z-index:-1;width:100%;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.ie-work-bg::before,.ie-work-bg::after,.ie-work-bg i{animation:none}}
+
+.ie-wrap{width:min(1240px,calc(100% - 64px));margin:0 auto}
+
+/* ---------- section head ---------- */
+.ie-work-head{max-width:720px;margin-bottom:clamp(30px,4.5vh,48px)}
+.ie-work-head .ie-bar{display:block;width:64px;height:4px;border-radius:4px;margin-bottom:22px;background:linear-gradient(90deg,var(--brand-orange),var(--brand-pink))}
+.ie-work-title{margin:0;font:800 clamp(42px,5vw,74px)/1.05 'MuseoModerno',var(--rounded);letter-spacing:-.01em;color:#fff}
+.ie-grad{background:var(--ie-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding-bottom:.06em}
+.ie-work-sub{margin:16px 0 0;font:600 clamp(14px,1.2vw,18px)/1.6 var(--rounded);color:rgba(255,255,255,.86)}
+html[dir="rtl"] .ie-work-title{font-family:'Mohawla',serif;font-weight:400;line-height:1.3;letter-spacing:0;font-size:clamp(60px,7.2vw,106px)}   /* Mohawla reads small: ~45% bigger */
+html[dir="rtl"] .ie-work-sub{font-family:'Montserrat Arabic',sans-serif;font-weight:400;line-height:1.9}
+
+/* ---------- reveal: each card "switches on" like a screen (works with fast scroll: JS marks everything already passed) ---------- */
+.ie-on-item{opacity:0;transform:translate3d(0,28px,0);transition:opacity .7s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.ie-on-item.is-on{opacity:1;transform:none}
+.ie-reduced .ie-on-item,.no-js .ie-on-item{opacity:1;transform:none}
+
+/* ---------- the three case-study cards ---------- */
+.ie-cases{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2vw,28px);margin:0;padding:0;list-style:none}
+.ie-cases>li{display:flex}.ie-cases>li>.ie-case{flex:1}
+.ie-case{position:relative;display:flex;flex-direction:column;height:100%;border-radius:22px;overflow:hidden;color:#fff;text-decoration:none;
+  --fw:1.5px;padding:var(--fw);margin:calc(1.5px - var(--fw));   /* frame width (thicker while selected, the content never moves); the thin frame (mauve → turquoise) is the card's own background showing in this 1.5px (no mask: Android) */
+  background:linear-gradient(140deg,rgba(202,18,194,.7),rgba(130,60,220,.45) 45%,rgba(39,246,197,.6));
+  isolation:isolate;
+  box-shadow:0 18px 40px -18px rgba(8,0,14,.8);
+  transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s ease}
+/* the card's dark body sits inside the frame (the 1.5px border shows around it) */
+.ie-case-bg{position:absolute;inset:var(--fw);z-index:0;border-radius:20.5px;background:linear-gradient(180deg,#300840,#1F0329)}
+.ie-case-media{z-index:1}.ie-case-body{z-index:2}
+/* SELECTED (hover on laptop, touch on phone): a thin glow runs round and round the frame, mauve → magenta → fuchsia,
+   as long as the card stays selected. A big conic gradient turning behind the dark body: only its rim shows
+   through the frame. transform only (GPU), and it only runs while the card is selected */
+.ie-case::before{content:"";position:absolute;left:50%;top:50%;z-index:0;width:220%;aspect-ratio:1;pointer-events:none;opacity:0;
+  background:conic-gradient(from 0deg,rgba(92,36,110,0) 0deg,rgba(92,36,110,0) 150deg,rgba(140,60,200,.85) 230deg,#B45CE6 285deg,#E04BE0 325deg,#FF8FEA 345deg,#fff 357deg,rgba(255,255,255,0) 360deg);
+  transform:translate(-50%,-50%) rotate(0deg);transition:opacity .45s ease}
+.ie-case.is-sel::before{opacity:1;animation:ieOrbit 3.2s linear infinite}
+.ie-case.is-sel{--fw:3px;box-shadow:0 0 0 1px rgba(202,18,194,.35),0 0 18px rgba(180,92,230,.65),0 0 44px rgba(150,50,220,.45),0 22px 50px -20px rgba(150,40,220,.6)}
+@keyframes ieOrbit{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.ie-case.is-sel::before{animation:none}}
+/* the light that runs across the card once when it switches on */
+.ie-case::after{content:"";position:absolute;top:0;bottom:0;left:0;width:60%;z-index:3;pointer-events:none;opacity:0;
+  background:linear-gradient(100deg,rgba(255,255,255,0),rgba(220,190,255,.20) 45%,rgba(255,255,255,.32) 50%,rgba(220,190,255,.20) 55%,rgba(255,255,255,0));
+  transform:translate3d(-120%,0,0)}
+.is-on>.ie-case::after{animation:ieSweep 1.1s cubic-bezier(.4,.1,.3,1) .15s both}
+@keyframes ieSweep{0%{opacity:0;transform:translate3d(-120%,0,0)}15%{opacity:1}100%{opacity:0;transform:translate3d(230%,0,0)}}
+
+.ie-case-media{position:relative;aspect-ratio:16/10.5;overflow:hidden;background:#2A0638;border-radius:20.5px 20.5px 0 0}
+.ie-case-media img,.ie-case-media video{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+/* screen-on flicker of the image */
+.ie-case-media>*{opacity:0}
+.is-on>.ie-case .ie-case-media>*{animation:ieScreenOn .9s ease .25s both}
+@keyframes ieScreenOn{0%{opacity:0}30%{opacity:.75}42%{opacity:.25}60%{opacity:.9}72%{opacity:.6}100%{opacity:1}}
+/* placeholder until Nehal sends the real images */
+.ie-ph{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;width:100%;height:100%;
+  background:radial-gradient(90% 90% at 30% 20%,rgba(202,18,194,.35),rgba(92,36,110,.25) 45%,rgba(30,3,42,.2) 80%),linear-gradient(160deg,#3A0B4C,#22042F);
+  color:rgba(255,255,255,.55);font-size:13px;letter-spacing:.04em}
+.ie-ph svg{width:34px;height:34px;opacity:.7}
+
+.ie-case-body{position:relative;z-index:1;display:flex;align-items:center;gap:16px;padding:22px 22px 24px;flex:1}
+.ie-case-text{flex:1;min-width:0}
+.ie-case-name{margin:0 0 8px;font:800 clamp(20px,1.75vw,26px)/1.15 'MuseoModerno',var(--rounded);color:#fff;overflow-wrap:anywhere}
+.ie-case-desc{margin:0;font:600 14px/1.55 var(--rounded);color:rgba(255,255,255,.8)}
+html[dir="rtl"] .ie-case-name{font-family:'Mohawla',serif;font-weight:400;line-height:1.3;font-size:clamp(30px,2.6vw,39px)}   /* Arabic: 50% bigger (Mohawla reads small) */
+html[dir="rtl"] .ie-case-desc{font-family:'Montserrat Arabic',sans-serif;font-weight:400;line-height:1.8}
+.ie-arrow{flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;border:1.6px solid rgba(255,255,255,.9);color:#fff;transition:background .35s ease,border-color .35s ease,color .35s ease,transform .35s ease}
+.ie-arrow svg{width:18px;height:18px}
+html[dir="rtl"] .ie-arrow svg{transform:scaleX(-1)}
+
+@media (hover:hover) and (pointer:fine){
+  .ie-case:hover .ie-case-media img,.ie-case:hover .ie-case-media video,.ie-case:hover .ie-ph{transform:scale(1.04)}
+  .ie-case:hover .ie-arrow{background:#fff;border-color:#fff;color:#2A0638;transform:translateX(3px)}
+  html[dir="rtl"] .ie-case:hover .ie-arrow{transform:translateX(-3px)}
+}
+.ie-ph{transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.ie-case:focus-visible{outline:2px solid var(--brand-mint);outline-offset:4px}
+
+/* ---------- the quiz card (full width) ---------- */
+.ie-quiz{position:relative;margin-top:clamp(56px,6vw,90px);border-radius:28px;isolation:isolate;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  border:1.5px solid transparent;
+  display:grid;grid-template-columns:minmax(200px,34%) 1fr;align-items:center;gap:clamp(16px,3vw,48px);
+  padding:clamp(26px,3.4vw,48px) clamp(26px,4vw,64px) clamp(26px,3.4vw,48px) clamp(10px,2vw,30px);
+  background:radial-gradient(70% 120% at 100% 100%,rgba(255,42,111,.38),rgba(202,18,194,.18) 40%,rgba(202,18,194,0) 70%) padding-box,
+             radial-gradient(60% 100% at 0% 0%,rgba(140,40,200,.35),rgba(140,40,200,0) 70%) padding-box,
+             linear-gradient(135deg,#4A1162,#2C0640 55%,#3A0A52) padding-box,
+             linear-gradient(120deg,rgba(255,168,53,.75),rgba(255,42,111,.7) 35%,rgba(202,18,194,.55) 65%,rgba(39,246,197,.55)) border-box;
+  box-shadow:0 24px 60px -24px rgba(8,0,14,.85)}
+html[dir="rtl"] .ie-quiz{padding-left:clamp(26px,4vw,64px);padding-right:clamp(10px,2vw,30px)}
+/* the cave from the quiz board: its dome rises above the card's top edge, its cut edges melt into the card (baked into the picture) */
+.ie-quiz-cave{position:relative;align-self:stretch;width:100%;max-width:360px;justify-self:center;
+  margin:calc(-1 * clamp(26px,3.4vw,48px)) 0 calc(-1 * clamp(26px,3.4vw,48px));min-height:200px}
+.ie-quiz-cave-in{position:absolute;left:-8%;bottom:0;width:116%;aspect-ratio:760/787;pointer-events:none}
+.ie-quiz-cave-in img{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none}
+.ie-quiz-cave-in .ie-cave-m{display:none}
+/* the glow at the cave mouth: soft at rest, bright and pulsing when the card is tapped (like the end of the quiz) */
+.ie-quiz-cave-in i{position:absolute;left:var(--gx,46%);top:var(--gy,58%);width:72%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(.7);pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(circle,rgba(255,246,214,.95) 0,rgba(255,200,90,.66) 16%,rgba(255,150,60,.4) 34%,rgba(255,95,120,.16) 52%,rgba(255,95,120,0) 70%);
+  opacity:.25;transition:opacity .5s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.ie-quiz-cave-in i+i{background:radial-gradient(circle,rgba(255,225,61,0) 40%,rgba(255,225,61,.4) 47%,rgba(255,168,53,0) 56%);opacity:0}
+.ie-quiz.is-lit .ie-quiz-cave-in i{opacity:1;transform:translate(-50%,-50%) scale(1.35);animation:ieCave 1.3s ease-in-out infinite alternate .4s}
+.ie-quiz.is-lit .ie-quiz-cave-in i+i{animation:ieRing 1s ease-out infinite .2s}
+@keyframes ieCave{from{opacity:.9;transform:translate(-50%,-50%) scale(1.3)}to{opacity:1;transform:translate(-50%,-50%) scale(1.7)}}
+@keyframes ieRing{from{opacity:.9;transform:translate(-50%,-50%) scale(.6)}to{opacity:0;transform:translate(-50%,-50%) scale(1.9)}}
+@media (prefers-reduced-motion:reduce){.ie-quiz.is-lit .ie-quiz-cave-in i{animation:none}}
+.ie-quiz-text{position:relative;z-index:1;max-width:560px}
+.ie-quiz-title{margin:0;font:800 clamp(38px,4.1vw,64px)/1.05 'MuseoModerno',var(--rounded);color:#fff}
+.ie-quiz-desc{margin:14px 0 26px;font:600 clamp(14px,1.2vw,18px)/1.6 var(--rounded);color:rgba(255,255,255,.88)}
+html[dir="rtl"] .ie-quiz-title{font-family:'Mohawla',serif;font-weight:400;line-height:1.3;font-size:clamp(52px,5.8vw,90px)}
+html[dir="rtl"] .ie-quiz-desc{font-family:'Montserrat Arabic',sans-serif;font-weight:400;line-height:1.9}
+.ie-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 30px;border-radius:999px;border:0;text-decoration:none;
+  font:700 16px/1 var(--rounded);color:#2A0638;background:linear-gradient(90deg,var(--brand-orange),#FF7A8A 55%,#FF5FD2);
+  box-shadow:0 10px 26px -10px rgba(255,90,140,.8);transition:transform .3s ease,box-shadow .3s ease}
+html[dir="rtl"] .ie-btn{font-family:'Montserrat Arabic',sans-serif;font-weight:700;background:linear-gradient(270deg,var(--brand-orange),#FF7A8A 55%,#FF5FD2)}
+.ie-btn svg{width:18px;height:18px;flex:none}
+html[dir="rtl"] .ie-btn svg{transform:scaleX(-1)}
+@media (hover:hover) and (pointer:fine){.ie-btn:hover{transform:translateY(-2px);box-shadow:0 16px 32px -12px rgba(255,90,140,.9)}}
+.ie-btn:focus-visible{outline:2px solid var(--brand-mint);outline-offset:4px}
+
+/* ---------- tablet / phone: stacked (like the reference: the text sits on the image) ---------- */
+@media (max-width:900px){
+  .ie-work{padding-top:clamp(70px,9vh,110px)}
+  .ie-wrap{width:min(640px,calc(100% - 36px))}
+  .ie-cases{grid-template-columns:1fr;gap:14px}
+  .ie-case{display:block;aspect-ratio:16/10}
+  .ie-case-media{position:absolute;inset:var(--fw);aspect-ratio:auto;border-radius:20.5px}
+  .ie-case-body{position:absolute;left:var(--fw);right:var(--fw);bottom:var(--fw);border-radius:0 0 20.5px 20.5px;padding:44px 16px 16px;gap:12px;
+    background:linear-gradient(180deg,rgba(24,1,33,0),rgba(24,1,33,.78) 45%,rgba(24,1,33,.92))}
+  .ie-case-name{font-size:21px;margin-bottom:4px}
+  html[dir="rtl"] .ie-case-name{font-size:31px;margin-bottom:0}
+  .ie-ph{justify-content:flex-start;padding-top:16%}
+  .ie-case-desc{font-size:12.5px;line-height:1.5}
+  .ie-arrow{width:38px;height:38px}
+  .ie-quiz{grid-template-columns:34% 1fr;gap:14px;padding:22px 20px 24px 8px;border-radius:24px;margin-top:48px}
+  .ie-quiz-cave{margin:-22px 0 -24px;min-height:150px}
+  html[dir="rtl"] .ie-quiz{padding:22px 8px 24px 20px}
+  .ie-quiz-title{font-size:34px}
+  html[dir="rtl"] .ie-quiz-title{font-size:48px}
+  html[dir="rtl"] .ie-work-title{font-size:clamp(52px,14vw,64px)}
+  .ie-quiz-desc{font-size:13px;margin:8px 0 16px}
+  .ie-btn{padding:12px 22px;font-size:15px}
+}
+@media (max-width:420px){
+  .ie-work-head .ie-bar{margin-bottom:16px}
+  .ie-quiz{grid-template-columns:1fr;justify-items:center;text-align:center;padding:24px 18px 26px}
+  html[dir="rtl"] .ie-quiz{padding:24px 18px 26px}
+  .ie-quiz{margin-top:86px}
+  /* phone: the wide crop fills the card from side to side; only the cave's dome rises above the card, the bottom melts into the title */
+  .ie-quiz-cave{width:calc(100% + 36px);max-width:none;min-height:0;margin:-24px -18px 4px;align-self:auto;aspect-ratio:800/587}
+  .ie-quiz-cave-in{left:0;width:100%;aspect-ratio:800/787;--gx:44%;--gy:55%}
+  .ie-quiz-cave-in .ie-cave-l{display:none}
+  .ie-quiz-cave-in .ie-cave-m{display:block}
+  .ie-quiz{border-radius:24px}
+}
+.ie-case-media,.ie-case-name,.ie-case-desc{display:block}
+@media (max-width:760px){.ie-work{padding-top:22px}.ie-work-head{margin-bottom:22px}.ie-work-head .ie-bar{margin-bottom:14px}.ie-work-sub{margin-top:10px}}

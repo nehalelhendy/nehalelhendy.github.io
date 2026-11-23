@@ -1,0 +1,300 @@
+/* =====================================================================
+   QUIZ — the board game (components/quiz.js · content in quiz-data.js)
+   Full screen over the page: Nehal's night-valley background (laptop / tall mobile version),
+   8 floating stone platforms on the road with her icons, small dots along the road that light up
+   as the visitor "walks", the glowing cave at the end + her wooden signpost, and dark-glass pop-ups
+   (the same glass as the case studies). Only transform / opacity animate; no blur on phones (Android).
+   ===================================================================== */
+.qz{position:fixed;inset:0;z-index:59;background:#0b0418;color:#fff;opacity:0;transition:opacity .45s ease}
+.qz[hidden]{display:none}
+.qz.on{opacity:1}
+.qz-lock,.qz-lock body{overflow:hidden}
+.qz-lock #ieWaves,.qz-lock #ieSphere,.qz-lock #ieWorkWaves{display:none}
+
+.qz-scroll{position:absolute;inset:0;overflow:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.qz-scroll::-webkit-scrollbar{display:none}
+.qz.is-scroll .qz-scroll{overflow-y:auto}
+.qz-world{position:relative;width:100%;overflow:hidden}
+.qz-map{position:absolute;left:0;top:0;direction:ltr;transform-origin:0 0}
+.qz-bg,.qz-soft{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.qz-bg{opacity:0;transition:opacity .6s ease}
+.qz-bg.is-in{opacity:1}
+/* the soft (blurred) copy: a tiny pre-blurred image stretched over the sharp one — no live blur filter */
+.qz-soft{z-index:1;transition:opacity 1s ease}
+.qz.is-play .qz-soft{opacity:0}
+.qz-dim{position:absolute;inset:0;z-index:2;background:rgba(10,2,18,.35);transition:opacity 1s ease;pointer-events:none}
+.qz.is-play .qz-dim{opacity:0}
+
+/* ---------- the dots along the road ---------- */
+.qz-dots{position:absolute;inset:0;z-index:3;pointer-events:none}
+.qz-dot{position:absolute;width:calc(var(--ds,5px) * var(--s,1));height:calc(var(--ds,5px) * var(--s,1));margin:calc(var(--ds,5px) * var(--s,1) / -2) 0 0 calc(var(--ds,5px) * var(--s,1) / -2);
+  border-radius:50%;background:rgba(222,216,238,.24);box-shadow:0 0 0 1px rgba(255,255,255,.08);opacity:0;transition:opacity .6s ease}
+.qz.is-play .qz-dot{opacity:1;transition-delay:calc(var(--a,0) * 1ms)}
+.qz-dot::after{content:"";position:absolute;inset:-70%;border-radius:50%;
+  background:radial-gradient(circle,#FFF6C8 0 26%,#FFE13D 34%,rgba(255,168,53,.55) 52%,rgba(255,90,140,0) 72%);
+  opacity:0;transform:scale(.4);transition:opacity .35s ease,transform .45s cubic-bezier(.2,.9,.3,1.4);transition-delay:calc(var(--d,0) * 1ms)}
+.qz-dot.is-lit::after{opacity:1;transform:scale(1)}
+
+/* ---------- the stations (stone platform + icon) ---------- */
+.qz-st{position:absolute;z-index:5;width:var(--w);height:calc(var(--w) * .4);margin:0;padding:0;border:0;background:none;cursor:pointer;
+  transform:translate(-50%,-34%);-webkit-tap-highlight-color:transparent;opacity:0;pointer-events:none}
+.qz.is-play .qz-st{opacity:1;pointer-events:auto;animation:qzIn .8s cubic-bezier(.2,.8,.25,1.2) backwards;animation-delay:calc(240ms + var(--i) * 110ms)}
+@keyframes qzIn{from{opacity:0;transform:translate(-50%,-10%) scale(.55)}}
+.qz-st:focus-visible{outline:none}
+.qz-st:focus-visible .qz-plat{outline:2px solid #27F6C5;outline-offset:4px;border-radius:40%}
+.qz-float{position:absolute;inset:0;animation:qzFloat 3.6s ease-in-out infinite alternate;animation-delay:calc(var(--i) * -.47s)}
+@keyframes qzFloat{from{transform:translate3d(0,-3%,0)}to{transform:translate3d(0,9%,0)}}
+.qz-plat{position:absolute;left:0;top:0;width:100%;height:auto;pointer-events:none;user-select:none;-webkit-user-drag:none;transition:opacity .5s ease}
+.qz-icw{position:absolute;left:50%;bottom:58%;width:calc(var(--iw,.62) * 100%);margin-left:calc(var(--iw,.62) * -50%);transform-origin:50% 92%;pointer-events:auto;cursor:inherit;
+  transition:transform .7s cubic-bezier(.2,.9,.25,1.25)}
+.qz-ico{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none;transition:opacity .5s ease}
+/* the glow behind the active icon */
+.qz-glow{--g:2.1;position:absolute;left:50%;bottom:58%;width:calc(var(--g) * 100%);aspect-ratio:1;margin:0 0 calc((var(--iw,.62) - var(--g)) * 50%) calc(var(--g) * -50%);border-radius:50%;pointer-events:none;opacity:0;transform:scale(.5);
+  background:radial-gradient(circle,rgba(255,248,214,1) 0,rgba(255,228,90,.82) 13%,rgba(255,150,80,.58) 24%,rgba(255,95,210,.48) 38%,rgba(180,92,230,.24) 54%,rgba(180,92,230,0) 70%);
+  transition:opacity .6s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+/* not reached yet */
+.qz-st.is-lock{cursor:default}
+.qz-st.is-lock .qz-ico{opacity:.62}
+.qz-st.is-lock .qz-plat{opacity:.85}
+/* the current station: the icon grows, floats higher and glows */
+.qz-st.is-on{z-index:7}
+.qz-st.is-on .qz-icw{transform:translateY(-14%) scale(1.42);animation:qzBob 2.4s ease-in-out infinite alternate .7s}
+@keyframes qzBob{from{transform:translateY(-14%) scale(1.42)}to{transform:translateY(-24%) scale(1.42)}}
+.qz-st.is-on .qz-glow{opacity:1;transform:scale(1);animation:qzPulse 2.4s ease-in-out infinite alternate .8s}
+/* laptop board: big icons sit a little lower on the platform, with a wider glow */
+.qz.is-bigicon .qz-icw,.qz.is-bigicon .qz-glow{bottom:52%}
+.qz.is-bigicon .qz-glow{--g:2.75}
+/* phone board: same platform, bigger icons and a stronger glow */
+.qz.is-tall{--iw:.82}
+.qz.is-tall .qz-icw{bottom:52%}
+.qz.is-tall .qz-glow{--g:2.55;bottom:52%}
+@keyframes qzPulse{from{opacity:.75;transform:scale(.92)}to{opacity:1;transform:scale(1.1)}}
+/* the small check circle right at the icon's lower corner, once the station is answered */
+.qz-tap{position:absolute;right:-6%;bottom:4%;width:calc(var(--w) * .2);height:calc(var(--w) * .2);min-width:16px;min-height:16px;border-radius:50%;display:grid;place-items:center;
+  color:#fff;background:linear-gradient(135deg,#FF5FD2,#B45CE6 55%,#FF5646);box-shadow:0 0 0 1.5px rgba(255,255,255,.85),0 2px 10px rgba(255,95,210,.55);
+  opacity:0;transform:scale(.3);transition:opacity .4s ease,transform .5s cubic-bezier(.2,.9,.3,1.5),background .4s ease}
+.qz-tap svg{grid-area:1/1;width:62%;height:62%;transition:opacity .3s ease}
+html[dir="rtl"] .qz-st .qz-tap{right:auto;left:-6%}
+.qz-st.is-done .qz-tap{opacity:1;transform:scale(1);color:#0d2a24;background:linear-gradient(135deg,#27F6C5,#1BC7A0);box-shadow:0 0 0 1.5px rgba(255,255,255,.7),0 2px 10px rgba(39,246,197,.45)}
+@media (hover:hover) and (pointer:fine){.qz-st.is-done:hover .qz-icw{transform:translateY(-6%) scale(1.12)}}
+/* ---------- the cave (final station) + the signpost ---------- */
+.qz-cave{position:absolute;z-index:4;width:var(--cw);aspect-ratio:1;margin:0;padding:0;border:0;background:none;border-radius:50%;transform:translate(-50%,-50%);
+  cursor:default;pointer-events:none;-webkit-tap-highlight-color:transparent}
+.qz-cave i{position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(255,246,214,.9) 0,rgba(255,200,90,.62) 16%,rgba(255,150,60,.36) 34%,rgba(255,95,120,.14) 52%,rgba(255,95,120,0) 70%);
+  opacity:.22;transform:scale(.75);transition:opacity 1.2s ease,transform 1.4s cubic-bezier(.2,.8,.2,1)}
+.qz-cave i+i{background:radial-gradient(circle,rgba(255,225,61,0) 40%,rgba(255,225,61,.35) 47%,rgba(255,168,53,0) 56%);opacity:0}
+.qz.is-ready .qz-cave{cursor:pointer;pointer-events:auto}
+.qz.is-ready .qz-cave i{opacity:1;transform:scale(1.35);animation:qzCave 2.6s ease-in-out infinite alternate 1.2s}
+.qz.is-ready .qz-cave i+i{animation:qzRing 2.4s ease-out infinite 1.2s}
+@keyframes qzCave{from{opacity:.85;transform:scale(1.25)}to{opacity:1;transform:scale(1.5)}}
+@keyframes qzRing{from{opacity:.9;transform:scale(.6)}to{opacity:0;transform:scale(1.9)}}
+.qz-cave:focus-visible{outline:2px solid #27F6C5;outline-offset:-20%}
+/* ---------- back to the main page (bottom of the board) ---------- */
+.qz-home{position:absolute;z-index:8;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:12px;padding:8px 10px;color:#fff;text-decoration:none;white-space:nowrap;
+  font:600 clamp(22px,1.85vw,30px)/1.12 var(--rounded);text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 16px rgba(10,2,18,.9);opacity:0;transition:opacity .6s ease 1.2s,color .25s}
+html[dir="rtl"] .qz-home{font:400 clamp(22px,1.8vw,29px)/1.35 'Montserrat Arabic',sans-serif}
+.qz.is-play .qz-home{opacity:1}
+.qz-home:hover{color:#FFE13D}
+/* two equal lines; the door is as tall as both */
+.qz-home-t{display:flex;flex-direction:column;align-items:flex-start}
+.qz-home-t span{display:block}
+.qz-home svg{width:auto;height:2.3em;aspect-ratio:1;flex:none;filter:drop-shadow(0 1px 3px rgba(0,0,0,.85))}
+html[dir="rtl"] .qz-home svg{transform:scaleX(-1);height:2.55em}
+.qz-home:focus-visible{outline:2px solid #27F6C5;outline-offset:4px;border-radius:8px}
+
+/* ---------- "Your Dream Design" in the empty sky (phone board) ---------- */
+.qz-sky{position:absolute;z-index:3;left:0;right:0;margin:0;transform:translateY(-50%);text-align:center;pointer-events:none;color:#fff;
+  filter:drop-shadow(0 2px 10px rgba(10,2,24,.65));opacity:0;transition:opacity .9s ease .6s}
+.qz-sky-t{margin:0;white-space:nowrap;font:900 clamp(28px,8.6vw,46px)/1.1 'MuseoModerno',sans-serif;letter-spacing:-.015em}
+.qz-sky-s{margin:8px auto 0;max-width:min(84vw,420px);font:800 clamp(14px,3.9vw,19px)/1.3 'MuseoModerno',sans-serif;color:#fff;text-wrap:balance}
+html[dir="rtl"] .qz-sky-s{margin-top:2px;font:400 clamp(21px,5.9vw,28px)/1.35 'Mohawla',serif}
+.qz-sky[hidden]{display:none}
+.qz.is-play .qz-sky{opacity:1}
+.qz-sky-t span+span{background:var(--ie-grad,linear-gradient(90deg,#FF5FD2,#B45CE6 50%,#FF5646));-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.08em}
+html[dir="rtl"] .qz-sky-t{font:400 clamp(40px,12vw,62px)/1.3 'Mohawla',serif;letter-spacing:0}
+html[dir="rtl"] .qz-sky-t span:first-child{background:linear-gradient(270deg,#FF5FD2,#B45CE6 50%,#FF5646);-webkit-background-clip:text;background-clip:text;color:transparent}
+html[dir="rtl"] .qz-sky-t span+span{background:none;color:#fff}
+/* laptop: one line each */
+.qz.is-bigicon .qz-sky-t{font-size:clamp(40px,calc(var(--mw) * .042),72px)}
+.qz.is-bigicon .qz-sky-s{max-width:none;white-space:nowrap;margin-top:10px;font-size:clamp(16px,calc(var(--mw) * .0145),26px)}
+html[dir="rtl"] .qz.is-bigicon .qz-sky-t{font-size:clamp(54px,calc(var(--mw) * .056),92px)}
+html[dir="rtl"] .qz.is-bigicon .qz-sky-s{margin-top:4px;font-size:clamp(22px,calc(var(--mw) * .022),36px)}
+
+/* ---------- close (top, under the menu) ---------- */
+.qz-x{position:absolute;z-index:20;top:calc(92px + env(safe-area-inset-top,0px));right:22px;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;padding:0;
+  color:#fff;background:rgba(10,3,16,.5);border:1px solid rgba(255,255,255,.22);transition:background .3s ease,border-color .3s ease}
+.qz-x svg{width:16px;height:16px}
+.qz-x:hover{background:rgba(202,18,194,.4);border-color:rgba(255,120,230,.6)}
+.qz-x:focus-visible{outline:2px solid #27F6C5;outline-offset:3px}
+
+/* ---------- pop-ups: intro · question · result (dark glass, like the case studies) ---------- */
+.qz-veil{position:absolute;inset:0;z-index:30;background:rgba(6,1,10,.5);opacity:0;pointer-events:none;transition:opacity .4s ease}
+@media (hover:hover) and (pointer:fine){.qz-veil{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}}
+.qz.has-modal .qz-veil{opacity:1;pointer-events:auto}
+.qz-box{position:absolute;z-index:31;left:50%;top:50%;width:min(var(--bw,640px),calc(100vw - 40px));max-height:calc(100% - 150px);display:flex;flex-direction:column;overflow:hidden;
+  border-radius:26px;
+  background:linear-gradient(160deg,rgba(26,14,30,.82),rgba(4,2,6,.84) 45%,rgba(10,4,14,.88));
+  box-shadow:0 40px 120px rgba(0,0,0,.6),0 0 46px rgba(202,18,194,.22),0 0 110px rgba(92,36,110,.35);
+  opacity:0;transform:translate3d(-50%,calc(-50% + 22px),0) scale(.97);pointer-events:none;transition:opacity .4s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+.qz-box.on{opacity:1;transform:translate3d(-50%,-50%,0);pointer-events:auto}
+.qz-in{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:clamp(26px,3.2vw,40px);scrollbar-width:thin;scrollbar-color:rgba(202,18,194,.45) transparent}
+.qz.is-modal .qz-x{opacity:0;pointer-events:none}
+.qz-box::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;
+  background:linear-gradient(135deg,#B07CFF 0%,#5C246E 28%,#9B1FA8 55%,#CA12C2 78%,#FF4FD8 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.qz-bx{position:absolute;top:14px;inset-inline-end:14px;z-index:2;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;padding:0;color:#fff;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);transition:background .3s}
+.qz-bx svg{width:14px;height:14px}
+.qz-bx:hover{background:rgba(202,18,194,.35)}
+.qz-bx:focus-visible{outline:2px solid #27F6C5;outline-offset:3px}
+
+/* intro: transparent black box over the soft background */
+.qz-intro{--bw:600px;text-align:center;background:rgba(0,0,0,.6);box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 60px rgba(202,18,194,.18)}
+.qz-label{margin:0 0 6px;font:400 clamp(26px,2.6vw,34px)/1.1 'Feeling Passionate',cursive;color:#27F6C5}
+html[dir="rtl"] .qz-label{font:400 clamp(26px,2.6vw,32px)/1.5 'Lemon Brush Arabic',cursive}
+.qz-h{margin:0;font:900 clamp(30px,3.4vw,46px)/1.04 'MuseoModerno',sans-serif;letter-spacing:-.015em}
+.qz-h span{display:block}
+html[dir="rtl"] .qz-h{font:400 clamp(44px,4.6vw,62px)/1.2 'Mohawla',serif;letter-spacing:0}
+.qz-h .ie-grad{padding-bottom:.08em}
+/* Arabic: «أحلامك» clearly bigger, pulled up right under «اكتشف تصميم» */
+html[dir="rtl"] .qz-intro .qz-h span:first-child{line-height:1.1}
+html[dir="rtl"] .qz-intro .qz-h .ie-grad{font-size:1.45em;line-height:1;margin-top:-.28em;padding-bottom:.12em}
+html[dir="rtl"] .qz-h .ie-grad{background:linear-gradient(270deg,#FF5FD2,#B45CE6 50%,#FF5646);-webkit-background-clip:text;background-clip:text}
+.qz-p{margin:16px auto 0;max-width:470px;font:600 clamp(14px,1.15vw,16px)/1.65 var(--rounded);color:rgba(255,255,255,.86)}
+html[dir="rtl"] .qz-p{font:400 15px/1.95 'Montserrat Arabic',sans-serif}
+.qz-steps{list-style:none;margin:22px auto 0;padding:0;max-width:470px;display:grid;gap:10px;text-align:start}
+.qz-steps li{display:flex;align-items:flex-start;gap:12px;font:600 14px/1.5 var(--rounded);color:rgba(255,255,255,.84)}
+html[dir="rtl"] .qz-steps li{font:400 14px/1.8 'Montserrat Arabic',sans-serif}
+.qz-steps b{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:800 13px/1 'MuseoModerno',sans-serif;color:#1a0420;
+  background:linear-gradient(135deg,#FFE13D,#FFA835);box-shadow:0 0 12px rgba(255,200,60,.45)}
+html[dir="rtl"] .qz-steps b{margin-top:2px}
+.qz-go{margin-top:28px;font-size:17px;padding:16px 34px;animation:qzGlow 2.2s ease-in-out infinite alternate}
+@keyframes qzGlow{from{box-shadow:0 0 14px rgba(255,120,140,.45),0 0 34px rgba(255,95,210,.25)}to{box-shadow:0 0 22px rgba(255,168,53,.8),0 0 54px rgba(255,95,210,.55),0 0 90px rgba(202,18,194,.3)}}
+.qz-go::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);background-size:250% 100%;
+  animation:qzSheen 3.2s ease-in-out infinite;mix-blend-mode:soft-light;pointer-events:none}
+.qz-go{position:relative;overflow:hidden}
+@keyframes qzSheen{from{background-position:120% 0}to{background-position:-120% 0}}
+
+/* question */
+.qz-q{--bw:800px}
+.qz-qhead{display:flex;align-items:center;gap:16px;margin-bottom:22px;padding-inline-end:40px}
+.qz-qico{flex:none;width:clamp(58px,6vw,76px);height:auto;filter:drop-shadow(0 6px 14px rgba(202,18,194,.35))}
+.qz-num{display:flex;align-items:center;gap:10px;margin-bottom:8px;font:800 13px/1 'MuseoModerno',sans-serif;letter-spacing:.12em;color:#FFE13D}
+.qz-num::after{content:"";width:30px;height:1.5px;border-radius:2px;background:rgba(255,255,255,.4)}
+.qz-num em{font-style:normal;font:600 12px/1 var(--rounded);letter-spacing:.14em;text-transform:uppercase;color:#27F6C5}
+html[dir="rtl"] .qz-num em{font:400 13px/1 'Montserrat Arabic',sans-serif;letter-spacing:0}
+.qz-qt{margin:0;font:800 clamp(22px,2.3vw,30px)/1.2 'MuseoModerno',sans-serif;letter-spacing:-.01em}
+html[dir="rtl"] .qz-qt{font:400 clamp(32px,3.2vw,42px)/1.35 'Mohawla',serif;letter-spacing:0}
+.qz-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.qz-opt{position:relative;display:block;width:100%;margin:0;padding:16px 18px 16px 18px;text-align:start;border-radius:18px;cursor:pointer;
+  background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.14);transition:background .25s ease,border-color .25s ease,transform .25s ease,box-shadow .3s ease}
+.qz-opt:last-child:nth-child(odd){grid-column:1/-1}
+.qz-opt b{display:block;padding-inline-end:26px;font:800 16px/1.3 'MuseoModerno',sans-serif;color:#fff}
+.qz-opt span{display:block;margin-top:6px;font:600 13.5px/1.55 var(--rounded);color:rgba(255,255,255,.72)}
+html[dir="rtl"] .qz-opt b{font:700 16px/1.5 'Montserrat Arabic',sans-serif}
+html[dir="rtl"] .qz-opt span{font:400 13.5px/1.8 'Montserrat Arabic',sans-serif}
+.qz-opt::after{content:"";position:absolute;top:16px;inset-inline-end:16px;width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35);transition:all .25s ease}
+@media (hover:hover) and (pointer:fine){.qz-opt:hover{background:rgba(202,18,194,.14);border-color:rgba(255,120,230,.55);transform:translateY(-2px)}}
+.qz-opt:focus-visible{outline:2px solid #27F6C5;outline-offset:3px}
+.qz-opt.is-sel{background:linear-gradient(135deg,rgba(255,95,210,.24),rgba(180,92,230,.18) 55%,rgba(255,86,70,.16));border-color:#FF8FE0;box-shadow:0 0 0 1px rgba(255,143,224,.5),0 0 26px rgba(255,95,210,.3)}
+.qz-opt.is-sel::after{border-color:#FFE13D;background:#FFE13D radial-gradient(circle,#1a0420 0 30%,transparent 34%);box-shadow:0 0 10px rgba(255,225,61,.7)}
+
+/* result */
+.qz-res{--bw:1080px}
+.qz-res .qz-in{display:grid;grid-template-columns:1.12fr 1fr;align-items:center;gap:clamp(24px,3vw,40px);padding:clamp(24px,2.6vw,34px)}
+.qz-rimg{position:relative;margin:0;border-radius:18px;overflow:hidden;background:#120618;box-shadow:0 18px 50px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.12)}
+.qz-rimg img{width:100%;height:auto;display:block}
+.qz-rtxt{padding:8px 0}
+.qz-rtxt .qz-label{font-size:clamp(24px,2.2vw,30px)}
+.qz-rtype{margin:4px 0 6px;font:600 12px/1.4 var(--rounded);letter-spacing:.16em;text-transform:uppercase;color:#27F6C5}
+html[dir="rtl"] .qz-rtype{font:400 15px/1.6 'Montserrat Arabic',sans-serif;letter-spacing:0}
+.qz-rname{margin:0;font:900 clamp(30px,3.2vw,44px)/1.02 'MuseoModerno',sans-serif;letter-spacing:-.02em}
+html[dir="rtl"] .qz-rname{font:400 clamp(44px,4.4vw,60px)/1.25 'Mohawla',serif;letter-spacing:0}
+.qz-rdesc{margin:14px 0 0;font:600 15px/1.65 var(--rounded);color:rgba(255,255,255,.86)}
+html[dir="rtl"] .qz-rdesc{font:400 15px/1.95 'Montserrat Arabic',sans-serif}
+.qz-specs{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 0;padding:0;list-style:none}
+.qz-specs li{padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);font:600 12px/1.2 var(--rounded);color:rgba(255,255,255,.9)}
+html[dir="rtl"] .qz-specs li{font:400 12.5px/1.5 'Montserrat Arabic',sans-serif}
+.qz-cta{margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.14)}
+.qz-cta h4{margin:0;font:800 18px/1.2 'MuseoModerno',sans-serif;color:#FFE13D}
+html[dir="rtl"] .qz-cta h4{font:400 28px/1.3 'Mohawla',serif}
+.qz-cta p{margin:6px 0 14px;font:600 13.5px/1.55 var(--rounded);color:rgba(255,255,255,.75)}
+html[dir="rtl"] .qz-cta p{font:400 13.5px/1.8 'Montserrat Arabic',sans-serif}
+.qz-connect{font-size:16px;padding:14px 30px}
+
+/* ---------- compact pop-ups: everything readable at once, no scrolling (laptop / tablet) ---------- */
+.qz-box{top:calc(50% + 26px);max-height:calc(100% - 112px)}
+.qz-in{padding:clamp(20px,2.3vw,30px)}
+.qz-intro{--bw:700px}
+.qz-intro .qz-label{margin-bottom:8px;color:#fff;font-size:17px}
+html[dir="rtl"] .qz-intro .qz-label{margin-bottom:2px;font-size:18px}
+.qz-h{font-size:clamp(34px,3.3vw,50px)}
+html[dir="rtl"] .qz-h{font-size:clamp(50px,4.6vw,70px);line-height:1.15}
+.qz-p{margin-top:10px;max-width:580px;font-size:14px;line-height:1.55}
+html[dir="rtl"] .qz-p{font-size:14px;line-height:1.8}
+.qz-steps{margin-top:14px;max-width:580px;gap:7px}
+.qz-steps li{gap:10px;font-size:13px;line-height:1.45}
+html[dir="rtl"] .qz-steps li{font-size:13px;line-height:1.7}
+.qz-steps b{width:22px;height:22px;font-size:11px}
+.qz-go{margin-top:18px;font-size:15px;padding:12px 26px}
+.qz-q{--bw:940px}
+.qz-qhead{gap:14px;margin-bottom:14px}
+.qz-qico{width:clamp(46px,4.2vw,58px)}
+.qz-num{margin-bottom:6px;font-size:12px}
+.qz-qt{font-size:clamp(18px,1.65vw,23px)}
+html[dir="rtl"] .qz-qt{font-size:clamp(24px,2.2vw,31px)}
+.qz-opts{gap:9px}
+.qz-opt{padding:11px 15px;border-radius:15px}
+.qz-opt::after{top:12px;inset-inline-end:13px;width:14px;height:14px}
+.qz-opt b{padding-inline-end:22px;font-size:14px}
+.qz-opt span{margin-top:3px;font-size:12px;line-height:1.45}
+html[dir="rtl"] .qz-opt b{font-size:14px;line-height:1.4}
+html[dir="rtl"] .qz-opt span{font-size:12px;line-height:1.6}
+
+/* ---------- phones / portrait ---------- */
+@media (max-width:760px){
+  .qz-x{top:calc(76px + env(safe-area-inset-top,0px));right:14px;width:38px;height:38px}
+  .qz-box{width:calc(100vw - 24px);max-height:calc(100% - 110px);border-radius:22px}
+  .qz-in{padding:24px 20px}
+  .qz-q,.qz-res{top:auto;bottom:12px;transform:translate3d(-50%,30px,0)}
+  .qz-q.on,.qz-res.on{transform:translate3d(-50%,0,0)}
+  .qz-qhead{gap:12px;margin-bottom:16px}
+  .qz-qico{width:52px}
+  .qz-opts{grid-template-columns:1fr;gap:9px}
+  .qz-opt{padding:13px 15px}
+  .qz-opt span{margin-top:4px}
+  .qz-res .qz-in{display:block;padding:14px 14px 22px}
+  .qz-rimg{border-radius:14px}
+  .qz-rtxt{padding:18px 6px 0}
+  .qz-res .qz-bx{top:20px;inset-inline-end:20px;background:rgba(10,3,16,.6)}
+  .qz-connect{font-size:15px;padding:13px 26px}
+  /* intro pop-up: smaller box and text on phones */
+  .qz-intro{width:calc(100vw - 56px)}
+  .qz-intro .qz-in{padding:22px 18px 24px}
+  .qz-intro .qz-label{font-size:15px}
+  html[dir="rtl"] .qz-intro .qz-label{font-size:16px}
+  .qz-intro .qz-h{font-size:31px}
+  html[dir="rtl"] .qz-intro .qz-h{font-size:46px}
+  .qz-p{margin-top:12px;font-size:13px;line-height:1.6}
+  html[dir="rtl"] .qz-p{font-size:13px;line-height:1.85}
+  .qz-steps{margin-top:16px;gap:8px}
+  .qz-steps li{gap:10px;font-size:12px}
+  html[dir="rtl"] .qz-steps li{font-size:12px;line-height:1.7}
+  .qz-steps b{width:22px;height:22px;font-size:11px}
+  .qz-go{margin-top:20px;font-size:15px;padding:12px 24px}
+  /* question pop-up: a little smaller too */
+  .qz-q .qz-in{padding:20px 16px}
+  .qz-qt{font-size:19px}
+  html[dir="rtl"] .qz-qt{font-size:27px}
+  .qz-opt{padding:11px 13px;border-radius:15px}
+  .qz-opt b{font-size:14px}
+  html[dir="rtl"] .qz-opt b{font-size:14px}
+  .qz-opt span{font-size:12px}
+  html[dir="rtl"] .qz-opt span{font-size:12px}
+  .qz-home{font-size:20px;gap:10px}
+  html[dir="rtl"] .qz-home{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){
+  .qz-float,.qz-st.is-on .qz-icw,.qz-st.is-on .qz-glow,.qz.is-ready .qz-cave i,.qz-go,.qz-go::before{animation:none}
+}

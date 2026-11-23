@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#46074F">
+  <meta name="description" content="Brand Identities by Nehal El Hendy — building distinctive visual worlds that give brands their own personality.">
+  <title>Brand Identities — Nehal El Hendy</title>
+  <script>/* language comes from the main site (?lang=ar) so the page opens in the visitor's language */
+    (function(){var l='en';try{l=new URLSearchParams(location.search).get('lang')||sessionStorage.getItem('nehLang')||'en';}catch(e){}
+      if(l==='ar'){document.documentElement.lang='ar';document.documentElement.dir='rtl';}document.documentElement.classList.add('bi-js','bi-enter');})();</script>
+  <link rel="preload" href="../hb/f/museomoderno-900.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="../site-nav.css">
+  <link rel="stylesheet" href="bi.css">
+  <link rel="stylesheet" href="video-carousel.css">
+  <script defer src="projects.js"></script>
+  <script defer src="videos.js"></script>
+  <script defer src="video-carousel.js"></script>
+  <script defer src="bi.js"></script>
+  <script defer src="../site-nav.js" data-page="brand" data-base="../"></script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FFA835'/%3E%3Cstop offset='.5' stop-color='%23FF2A6F'/%3E%3Cstop offset='1' stop-color='%23CA12C2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Arial Rounded MT Bold,Trebuchet MS,Arial,sans-serif' font-weight='900' font-size='40' fill='%23fff'%3EN%3C/text%3E%3C/svg%3E">
+</head>
+<body id="top">
+  <!-- atmosphere: liquid blobs that move, merge and mix colours, like the main site's hero (drawn by bi.js) -->
+  <canvas class="bi-liquid" id="biLiquid" aria-hidden="true"></canvas>
+
+  <header class="bi-top">
+    <button type="button" class="lang-blob" id="langBlob" data-to="ar" aria-label="Switch to Arabic">AR</button>
+    <a class="bi-logo" href="../index.html" aria-label="Home"><img src="../logo.webp" alt="nehal elhendy Portfolio" width="640" height="253"></a>
+  </header>
+
+  <main id="biMain">
+    <section class="bi-hero" aria-labelledby="biTitle">
+      <!-- laptop: soft liquid waves, a little lighter than the page, around the hero text (drawn by bi.js) -->
+      <canvas class="bi-hero-waves" id="biHeroWaves" aria-hidden="true"></canvas>
+      <div class="bi-hero-text">
+        <p class="bi-label" id="biLabel" data-en="Visual Identity Design" data-ar="تصميم الهوية البصرية">Visual Identity Design</p>
+        <!-- title and lead are written by bi.js (HERO): in Arabic each is set in lines of equal length -->
+        <h1 id="biTitle" class="bi-title">Brand Identities</h1>
+        <p class="bi-lead" id="biLead">Building distinctive visual worlds that give brands their own personality.</p>
+      </div>
+      <div class="bi-hero-flower" aria-hidden="true">
+        <!-- one flower per language (from Nehal's references), melting into the page; its light goes mauve → fuchsia -->
+        <div class="bi-bloom fl-en"><div class="or-sway"><i class="or-light"></i><img class="or-art" src="assets/flower-en.webp" alt="" decoding="async"></div></div>
+        <div class="bi-bloom fl-ar"><div class="or-sway"><i class="or-light"></i><img class="or-art" src="assets/flower-ar.webp" alt="" decoding="async"></div></div>
+        <!-- liquid in front of the flower: hides its edges -->
+        <canvas class="bi-front-liquid" id="biFrontLiquid"></canvas>
+      </div>
+    </section>
+
+    <section class="bi-work" aria-label="Projects">
+      <ul class="bi-grid" id="biGrid"></ul>
+    </section>
+  </main>
+
+  <!-- project pop-up: black glass over the blurred page, thin mauve → fuchsia frame; each project has its own address (#<slug>)
+       its mood board (layout, crops, colours, fonts) comes from projects.js, so every project is laid out differently -->
+  <div class="bi-case" id="biCase" role="dialog" aria-modal="true" aria-labelledby="biCaseName" hidden>
+    <div class="bi-veil" id="biVeil" aria-hidden="true"></div>
+    <div class="bi-pop" id="biPop">
+      <span class="bi-pop-frame" aria-hidden="true"></span>
+      <span class="bi-pop-sheen" aria-hidden="true"></span>
+      <div class="bi-pop-ctrl">
+        <button type="button" class="bi-pop-btn bi-pop-prev" id="biTopPrev"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+        <button type="button" class="bi-pop-btn bi-pop-next" id="biTopNext"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
+        <button type="button" class="bi-pop-btn bi-pop-close" id="biCaseClose"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+      </div>
+      <div class="bi-case-scroll" id="biScroll">
+        <div class="bi-case-inner" id="biInner">
+          <header class="mb-head" id="biHead"></header>
+          <div class="mb-board" id="biBoard"></div>
+          <nav class="bi-case-nav" aria-label="More projects">
+            <button type="button" class="bi-prev" id="biPrev"></button>
+            <button type="button" class="bi-next" id="biNext"></button>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bi-foot" id="contact">
+    <a class="bi-logo" href="../index.html" aria-label="Home"><img src="../logo.webp" alt="nehal elhendy Portfolio" width="640" height="253" loading="lazy"></a>
+    <a class="bi-up" id="biHome" href="../index.html#services"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4H6.5A1.5 1.5 0 0 0 5 5.5v13A1.5 1.5 0 0 0 6.5 20H13"/><path d="M10 12h10M16.5 8.5 20 12l-3.5 3.5"/></svg><span data-en="Back to the main page" data-ar="العودة إلى الصفحة الرئيسية">Back to the main page</span></a>
+  </footer>
+
+  <div class="bi-curtain" aria-hidden="true"></div>
+</body>
+</html>

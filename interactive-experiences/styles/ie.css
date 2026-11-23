@@ -1,0 +1,46 @@
+/* =====================================================================
+   INTERACTIVE EXPERIENCES — page shell (colours, header, footer)
+   Same identity as the main site and Brand Identities; its own layout.
+   Fonts live in the site's shared folder (site/hb/f/) and are declared in index.html
+   (relative to the page, the same way as the main site), so they load on every host.
+   ===================================================================== */
+
+:root{
+  /* site brand palette (unchanged) */
+  --brand-orange:#FFA835;--brand-coral:#FF5646;--brand-pink:#FF2A6F;--brand-magenta:#CA12C2;--brand-mauve:#5C246E;--brand-mint:#27F6C5;
+  --brand-yellow:#FFE13D;
+  /* page accent gradient (titles' highlighted word + "Design" in the hero): fuchsia → light mauve → coral.
+     The middle is the brand mauve #5C246E lifted so it reads on the dark background */
+  --ie-grad:linear-gradient(90deg,#FF5FD2,#B45CE6 50%,#FF5646);
+  /* this page: deep dark mauve (from Nehal's background reference) */
+  --ie-0:#180121;--ie-1:#1F012A;--ie-2:#260233;
+  --rounded:"VAG Rounded Next","Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{background:var(--ie-0);overflow-x:hidden}
+body{margin:0;min-height:100vh;color:#fff;font:600 16px/1.6 var(--rounded);background:var(--ie-1);overflow-x:hidden}
+@supports (overflow:clip){body{overflow-x:clip}}
+img{display:block;max-width:100%}
+a{color:inherit}button{font:inherit;color:inherit;cursor:pointer}
+html[dir="rtl"] body{font-family:"Montserrat Arabic",system-ui,sans-serif;font-weight:400}
+
+/* ---------- header: logo left · AR/EN + menu right (site-nav) ---------- */
+.ie-top{position:fixed;z-index:60;top:0;left:0;right:0;height:84px;display:flex;align-items:center;direction:ltr;padding-left:calc(24px + env(safe-area-inset-left,0px));pointer-events:none}
+.ie-top>*{pointer-events:auto}
+.ie-logo{display:block;line-height:0}
+.ie-top .ie-logo img{height:46px;width:auto;filter:drop-shadow(0 3px 10px rgba(30,0,40,.35))}
+.ie-logo:focus-visible{outline:2px solid var(--brand-mint);outline-offset:6px;border-radius:8px}
+
+/* ---------- footer: logo + "Back to the main page" (exit door) ---------- */
+.ie-foot{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;width:min(1240px,calc(100% - 64px));margin:0 auto;padding:30px 0 38px;border-top:1px solid rgba(255,255,255,.16)}
+.ie-foot .ie-logo img{height:54px;width:auto}
+.ie-home{display:inline-flex;align-items:center;gap:8px;color:var(--brand-yellow);text-decoration:none;font-size:14px;transition:color .25s}.ie-home:hover{color:#fff}
+.ie-home svg{width:20px;height:20px;flex:none}
+html[dir="rtl"] .ie-home svg{transform:scaleX(-1)}
+
+@media (max-width:760px){
+  .ie-top{height:70px;padding-left:calc(14px + env(safe-area-inset-left,0px))}
+  .ie-top .ie-logo img{height:34px}
+  .ie-foot{width:calc(100% - 36px)}
+  .ie-foot .ie-logo img{height:40px}
+}

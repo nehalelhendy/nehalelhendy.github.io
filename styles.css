@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+/* =========================================================
+   BRAND PALETTE (approved by Nehal, Oct 2026)
+   Single source of truth for the site's colors.
+   Sections are moved onto these tokens one at a time;
+   the older variables in the next :root block stay until
+   every section has been migrated.
+   ========================================================= */
+:root{
+  /* Brand colors */
+  --brand-orange:#FFA835;
+  --brand-coral:#FF5646;
+  --brand-pink:#FF2A6F;
+  --brand-magenta:#CA12C2;
+  --brand-mauve:#5C246E;  /* replaced blue-violet #744BFE (Oct 28) */
+  --brand-mint:#27F6C5;
+
+  /* Neutrals (not part of the brand palette) */
+  --brand-cream:#FFF6EC; /* paper / light backgrounds */
+  --brand-ink:#211627;   /* dark text */
+
+  /* Signature gradient: orange -> pink -> magenta */
+  --brand-gradient:linear-gradient(135deg,var(--brand-orange) 0%,var(--brand-pink) 55%,var(--brand-magenta) 100%);
+}
+:root{--ink:#211627;--plum:#351052;--purple:#7025a6;--magenta:#d41481;--hot-pink:#f1398c;--orange:#ff7a12;--yellow:#ffe13d;--mint:#4ff5cf;--cream:#fff8f6;--glass:rgba(255,226,234,.28);--rounded:"VAG Rounded Next","Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;--script:"Segoe Script","Brush Script MT",cursive;--page:1240px;--shadow:0 20px 55px rgba(48,0,60,.19)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;color:#fff;font-family:var(--rounded);font-size:16px;line-height:1.55;background:#d61b79;overflow-x:hidden}img{max-width:100%;display:block}button,a{font:inherit}a{color:inherit}button{cursor:pointer}::selection{background:#ffe14b;color:#55134c}.page-width{width:min(var(--page),calc(100% - 64px));margin-inline:auto}.scroll-progress{position:fixed;top:0;left:0;width:100%;height:4px;z-index:1000;pointer-events:none}.scroll-progress::after{content:"";display:block;height:100%;width:var(--scroll-progress,0%);background:linear-gradient(90deg,#53f2cf,#ffe344,#ff7349)}.language-switch{position:fixed;z-index:1001;top:18px;right:22px;border:1px solid rgba(255,255,255,.6);background:rgba(72,9,86,.6);color:white;backdrop-filter:blur(14px);border-radius:999px;padding:9px 15px;display:flex;gap:8px;align-items:center;box-shadow:0 5px 16px #51004b30;transition:transform .25s,background .25s}.language-switch:hover{transform:translateY(-2px);background:rgba(72,9,86,.82)}.lang-divider{opacity:.5}.lang-active{font-weight:900;color:var(--yellow)}.hero{min-height:min(900px,100svh);display:flex;align-items:center;isolation:isolate;overflow:hidden;padding:70px 0 120px;background-image:none;background-color:#e82d79}.hero::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(255,113,15,.16),rgba(242,38,111,.08) 48%,rgba(187,0,108,.2)),url("assets/backgrounds/magenta-orange-cropped-12px.jpg");background-size:cover;background-position:center;transform:scaleY(-1)}.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 18% 75%,rgba(0,218,175,.25),transparent 25%),linear-gradient(150deg,transparent 62%,rgba(210,0,119,.25));pointer-events:none}.handwritten{font-family:var(--script),cursive;font-weight:600;font-style:italic}.metric-frame{position:relative;margin-top:35px;padding:14px 20px;border:1px solid #ffe554;background:rgba(198,8,117,.28);border-radius:8px;box-shadow:inset 0 0 0 5px rgba(255,226,69,.08)}.metric-frame::before,.metric-frame::after{content:"✦";position:absolute;color:#ffe85b;font-size:16px}.metric-frame::before{left:-6px;top:-9px}.metric-frame::after{right:-5px;bottom:-10px}.metric{text-align:center;padding:3px 4px;display:flex;flex-direction:column;align-items:center;gap:3px}.metric strong{font-size:clamp(24px,3vw,40px);line-height:1.1;color:#fff34a;letter-spacing:-.03em;font-weight:1000}.metric span{font-size:clamp(9px,.83vw,12px);line-height:1.25;text-transform:uppercase;letter-spacing:.03em;color:#fff9ff;max-width:115px}.bird-accent{position:absolute;width:27%;right:1%;bottom:13%;height:auto;filter:drop-shadow(0 9px 12px rgba(88,0,70,.17));animation:bird-glide 6.8s ease-in-out infinite;pointer-events:none}
+.reveal{opacity:0;transform:translateY(24px) scale(.99);transition:opacity .75s cubic-bezier(.2,.75,.25,1),transform .75s cubic-bezier(.2,.75,.25,1)}.reveal.is-visible{opacity:1;transform:translateY(0) scale(1)}
+html[dir="rtl"] body{text-align:right}html[dir="rtl"] .bird-accent{right:auto;left:1%;transform:scaleX(-1)}html[dir="rtl"] .language-switch{right:auto;left:22px}
+@keyframes float{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-16px,0)}}@keyframes bird-glide{0%,100%{transform:translate(0,0) rotate(-3deg)}50%{transform:translate(-8px,-13px) rotate(2deg)}}
+@media(min-width:1450px){.hero{min-height:900px}}
+@media(max-width:1080px){.page-width{width:min(var(--page),calc(100% - 42px))}}
+@media(max-width:760px){body{font-size:15px}.page-width{width:calc(100% - 30px)}.language-switch{top:10px;right:10px;padding:7px 11px;font-size:13px}html[dir="rtl"] .language-switch{right:auto;left:10px}.hero{min-height:auto;padding:80px 0 94px}.metric-frame{padding:12px 8px;margin-top:26px}.metric strong{font-size:29px}.metric span{font-size:10px}.bird-accent{width:30%;bottom:11%}html[dir="rtl"] .bird-accent{right:auto;left:1%;transform:scaleX(-1)}}
+@media(max-width:400px){.metric:last-child{grid-column:1/-1}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1!important;transform:none!important}}
+
+/* Flower intro — automatic playback{height:100svh;min-height:460px;position:relative;background:linear-gradient(135deg,#ffd5bd,#f5b8d1 58%,#f0a3cb);z-index:10;overflow:hidden;opacity:1;transition:opacity .75s ease;}
+
+/* Nov 23: looping animations rest while their section is off screen (toggled in app.js) */
+#about.neh-off *,#about.neh-off *::before,#about.neh-off *::after,#experience.neh-off *,#experience.neh-off *::before,#experience.neh-off *::after,#skills.neh-off *,#skills.neh-off *::before,#skills.neh-off *::after{animation-play-state:paused!important}
